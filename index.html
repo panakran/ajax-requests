@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+
+        <script src="./node_modules/axios/dist/axios.js"></script>
+        <style>
+            .fixed-width{
+                width:120px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h2>Test CORS requests locally</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Request
+                    </h3>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fixed-width" id="basic-addon3">METHOD:</span>
+                        </div>
+                        <!--<input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
+                        <select class="form-control" id="methods" aria-describedby="basic-addon3">
+                            <option>Please choose an method</option>
+                            <option>GET</option>
+                            <option>PUT</option>
+                            <option>POST</option>
+                            <option>DELETE</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fixed-width" id="basic-addon3">BASE URL:</span>
+                        </div>
+                        <input class="form-control" id="baseurl" type="text" aria-describedby="basic-addon3" placeholder="http://..."/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fixed-width" id="basic-addon3">URL:</span>
+                        </div>
+                        <input class="form-control" id="url" type="text" aria-describedby="basic-addon3" placeholder="/myapi..."/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fixed-width" id="basic-addon3">HEADERS:</span>
+                        </div>
+                        <textarea class="form-control" id="headers" rows="6" aria-describedby="basic-addon3" placeholder="{'X-Requested-With': 'XMLHttpRequest',...}"></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fixed-width" id="basic-addon3">BODY:</span>
+                        </div>
+                        <textarea class="form-control" id="body" rows="6" aria-describedby="basic-addon3" placeholder="{ID: 12345},..."></textarea>
+                    </div>
+                    <button type="button" id="req" class="btn btn-success btn-lg btn-block">SEND REQUEST</button>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Response
+                    </h3>
+                    <textarea class="form-control" 
+                              aria-describedby="basic-addon3"
+                              placeholder="Response text..."
+                              rows="23"
+                              id="response" disabled ></textarea>
+                </div>
+            </div>
+        </div>
+        <script>
+            function parsingJson(value, func) {
+                var returnedVal;
+                try {
+                    returnedVal = func === JSON.parse ? JSON.parse(value) : JSON.stringify(value, undefined, 4);
+                } catch (e) {
+                    returnedVal = value;
+                }
+                return returnedVal;
+            }
+
+            document.getElementById("req").onclick = function () {
+
+                var methodElement = document.getElementById("methods");
+                var baseurlElement = document.getElementById("baseurl");
+                var urlElement = document.getElementById("url");
+                var headersElement = document.getElementById("headers");
+                var bodyElement = document.getElementById("body");
+                var responseElement = document.getElementById("response");
+
+                var parameters = parsingJson(bodyElement.value, JSON.parse);
+                var headers = parsingJson(headersElement.value, JSON.parse);
+
+                var axiosConfig = {
+                    method: methodElement.options[methodElement.selectedIndex].text,
+                    url: urlElement.value,
+                    baseURL: baseurlElement.value,
+                    data: parameters,
+                    headers: headers
+                };
+                console.log("REQUEST::", axiosConfig);
+                axios(axiosConfig)
+                        .then(function (response) {
+                            console.log("RESPONSE::", response);
+                            responseElement.value = parsingJson(response.data, JSON.stringify);
+                        })
+                        .catch(function (error) {
+                            console.error("ERROR::", error);
+                            responseElement.value = parsingJson(error.data, JSON.stringify);
+                        });
+            };
+        </script>
+    </body>
+</html>
