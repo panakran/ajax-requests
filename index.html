@@ -4,72 +4,84 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+        <!-- Compiled and minified CSS -->
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+        <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified JavaScript -->
 
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>-->
+        <script src="./node_modules/materialize-css/dist/js/materialize.js"></script>
         <script src="./node_modules/axios/dist/axios.js"></script>
-        <style>
-            .fixed-width{
-                width:120px;
-            }
-        </style>
+        <style>    
+            .leftpadding{padding-left:15px;}
+        </style>    
     </head>
     <body>
-        <div class="container-fluid">
-            <h2>Test CORS requests locally</h2>
-            <div class="row">
-                <div class="col-lg-6">
-                    <h3>Request
-                    </h3>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text fixed-width" id="basic-addon3">METHOD:</span>
-                        </div>
-                        <!--<input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
-                        <select class="form-control" id="methods" aria-describedby="basic-addon3">
-                            <option>Please choose an method</option>
-                            <option>GET</option>
-                            <option>PUT</option>
-                            <option>POST</option>
-                            <option>DELETE</option>
-                        </select>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text fixed-width" id="basic-addon3">BASE URL:</span>
-                        </div>
-                        <input class="form-control" id="baseurl" type="text" aria-describedby="basic-addon3" placeholder="http://..."/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text fixed-width" id="basic-addon3">URL:</span>
-                        </div>
-                        <input class="form-control" id="url" type="text" aria-describedby="basic-addon3" placeholder="/myapi..."/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text fixed-width" id="basic-addon3">HEADERS:</span>
-                        </div>
-                        <textarea class="form-control" id="headers" rows="6" aria-describedby="basic-addon3" placeholder="{'X-Requested-With': 'XMLHttpRequest',...}"></textarea>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text fixed-width" id="basic-addon3">BODY:</span>
-                        </div>
-                        <textarea class="form-control" id="body" rows="6" aria-describedby="basic-addon3" placeholder="{ID: 12345},..."></textarea>
-                    </div>
-                    <button type="button" id="req" class="btn btn-success btn-lg btn-block">SEND REQUEST</button>
+        <nav>
+            <div class="nav-wrapper blue leftpadding">
+                <a class="brand-logo">Test CORS requests locally</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="https://github.com/panakran/ajax-requests"><strong>Github</strong></a></li>
+                    <!--                    <li><a href="badges.html">Components</a></li>
+                                        <li><a href="collapsible.html">JavaScript</a></li>-->
+                </ul>
+            </div>
+        </nav>
+        <div class="progress" >
+            <div id="progressbar" class="determinate" style="width: 0%"></div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <h4>Request
+                </h4>
+                <div class="input-field col s12">
+                    <select class="icons" id="methods">
+                        <option value="" disabled selected>Please choose an method</option>
+                        <option value="" data-icon="send">GET</option>
+                        <option value="" data-icon="send">POST</option>
+                        <option value="" data-icon="icons/send">PUT</option>
+                        <option value="" data-icon="icons/send">DELETE</option>
+                    </select>
+                    <label for="methods">Method</label>
                 </div>
-                <div class="col-lg-6">
-                    <h3>Response
-                    </h3>
-                    <textarea class="form-control" 
-                              aria-describedby="basic-addon3"
-                              placeholder="Response text..."
-                              rows="23"
-                              id="response" disabled ></textarea>
+                <div class="input-field col s12">
+                    <input id="baseurl" type="text">
+                    <label for="baseurl">Base url</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="url" type="text"/>
+                    <label for="url">Base url</label>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="headers" class="materialize-textarea headers"></textarea>
+                    <label for="headers">Headers</label>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="body" class="materialize-textarea body"></textarea>
+                    <label for="body">Body</label>
+                </div>
+                <a class="waves-effect waves-light btn btn-large" id="req"><i class="material-icons right">send</i><strong>SEND REQUEST</strong></a>
+            </div>
+            <div class="col s6">
+                <h4>Response
+                </h4>
+                <div class="input-field col s12">
+                    <textarea id="responseH" class="materialize-textarea" disabled placeholder="headers"></textarea>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="responseB" class="materialize-textarea" disabled placeholder="body"></textarea>
                 </div>
             </div>
         </div>
+        <footer class="page-footer blue">
+            <div class="footer-copyright">
+                <div class="leftpadding">
+                    <span class="white-text">Powered by </span><a class="white-text" href="https://github.com/Dogfalo/materialize"><strong>Materialize</strong></a> | <a class="white-text" href="https://github.com/axios/axios"><strong>Axios</strong></a> | <a class="white-text" href="https://github.com/BrowserSync/browser-sync"><strong>Browser-sync</strong></a>
+                </div>
+            </div>
+        </footer>
         <script>
             function parsingJson(value, func) {
                 var returnedVal;
@@ -81,34 +93,45 @@
                 return returnedVal;
             }
 
-            document.getElementById("req").onclick = function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems/*, options*/);
+            });
 
-                var methodElement = document.getElementById("methods");
-                var baseurlElement = document.getElementById("baseurl");
-                var urlElement = document.getElementById("url");
+            document.getElementById("req").onclick = function () {
+                document.getElementById("progressbar").classList.add('indeterminate');
+                document.getElementById("progressbar").classList.remove('determinate');
+                const methodElement = document.getElementById("methods");
+                var method = methodElement.options[methodElement.selectedIndex].text;
+                var baseURL = document.getElementById("baseurl").value;
+                var url = document.getElementById("url").value;
                 var headersElement = document.getElementById("headers");
                 var bodyElement = document.getElementById("body");
-                var responseElement = document.getElementById("response");
+                var responseElementH = document.getElementById("responseH");
+                var responseElementB = document.getElementById("responseB");
 
-                var parameters = parsingJson(bodyElement.value, JSON.parse);
+                var data = parsingJson(bodyElement.value, JSON.parse);
                 var headers = parsingJson(headersElement.value, JSON.parse);
 
-                var axiosConfig = {
-                    method: methodElement.options[methodElement.selectedIndex].text,
-                    url: urlElement.value,
-                    baseURL: baseurlElement.value,
-                    data: parameters,
-                    headers: headers
-                };
+                var axiosConfig = {method, url, baseURL, data, headers};
                 console.log("REQUEST::", axiosConfig);
                 axios(axiosConfig)
-                        .then(function (response) {
+                        .then((response) => {
                             console.log("RESPONSE::", response);
-                            responseElement.value = parsingJson(response.data, JSON.stringify);
+                            responseElementH.value = parsingJson(response.headers, JSON.stringify);
+                            M.textareaAutoResize(responseElementH);
+                            responseElementB.value = parsingJson(response.data, JSON.stringify);
+                            M.textareaAutoResize(responseElementB);
+                            setTimeout(() => {
+                                document.getElementById("progressbar").classList.add('determinate');
+                                document.getElementById("progressbar").classList.remove('indeterminate');
+                            }, 1000)
                         })
-                        .catch(function (error) {
+                        .catch((error) => {
+                            M.toast({classes: "rounded card-panel red white-text text-darken-4", html: `<p>${error}</p>`})
                             console.error("ERROR::", error);
-                            responseElement.value = parsingJson(error.data, JSON.stringify);
+                            document.getElementById("progressbar").classList.add('determinate');
+                            document.getElementById("progressbar").classList.remove('indeterminate');
                         });
             };
         </script>
