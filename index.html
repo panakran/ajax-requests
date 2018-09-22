@@ -28,31 +28,31 @@
                                         <li><a href="collapsible.html">JavaScript</a></li>-->
                 </ul>
             </div>
+            <div class="progress white" >
+                <div id="progressbar" class=" blue lighten-2 " style="width: 0%"></div>
+            </div>
         </nav>
-        <div class="progress" >
-            <div id="progressbar" class="determinate" style="width: 0%"></div>
-        </div>
         <div class="row">
             <div class="col s6">
                 <h4>Request
                 </h4>
                 <div class="input-field col s12">
                     <select class="icons" id="methods">
-                        <option value="" disabled selected>Please choose an method</option>
-                        <option value="" data-icon="send">GET</option>
-                        <option value="" data-icon="send">POST</option>
-                        <option value="" data-icon="icons/send">PUT</option>
-                        <option value="" data-icon="icons/send">DELETE</option>
+                        <option value="" disabled selected>Please select an method</option>
+                        <option value="" data-icon="">GET</option>
+                        <option value="" data-icon="">POST</option>
+                        <option value="" data-icon="">PUT</option>
+                        <option value="" data-icon="">DELETE</option>
                     </select>
                     <label for="methods">Method</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="baseurl" type="text">
+                    <input id="baseurl" type="text" class="autocomplete">
                     <label for="baseurl">Base url</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="url" type="text"/>
-                    <label for="url">Base url</label>
+                    <input id="url" type="text" class="autocomplete"/>
+                    <label for="url">Sub url</label>
                 </div>
                 <div class="input-field col s12">
                     <textarea id="headers" class="materialize-textarea headers"></textarea>
@@ -62,20 +62,20 @@
                     <textarea id="body" class="materialize-textarea body"></textarea>
                     <label for="body">Body</label>
                 </div>
-                <a class="waves-effect waves-light btn btn-large" id="req"><i class="material-icons right">send</i><strong>SEND REQUEST</strong></a>
+                <a class="col s12 waves-effect waves-light btn btn-large z-depth-5" id="req"><i class="material-icons right">send</i><strong>Send request</strong></a>
             </div>
             <div class="col s6">
-                <h4>Response
+                <h4>Response <code id="executiontime" class="red-text"></code>
                 </h4>
                 <div class="input-field col s12">
-                    <textarea id="responseH" class="materialize-textarea" disabled placeholder="headers"></textarea>
+                    <textarea id="responseH" class="materialize-textarea" disabled ></textarea>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="responseB" class="materialize-textarea" disabled placeholder="body"></textarea>
+                    <textarea id="responseB" class="materialize-textarea" disabled ></textarea>
                 </div>
             </div>
         </div>
-        <footer class="page-footer blue">
+        <footer class="page-footer blue z-depth-3">
             <div class="footer-copyright">
                 <div class="leftpadding">
                     <span class="white-text">Powered by </span><a class="white-text" href="https://github.com/Dogfalo/materialize"><strong>Materialize</strong></a> | <a class="white-text" href="https://github.com/axios/axios"><strong>Axios</strong></a> | <a class="white-text" href="https://github.com/BrowserSync/browser-sync"><strong>Browser-sync</strong></a>
@@ -93,18 +93,31 @@
                 return returnedVal;
             }
 
+            let autocompleteDataBaseUrl = {};
+            let autocompleteinstanceBaseUrl;
+            let autocompleteDataUrl = {};
+            let autocompleteinstanceUrl;
             document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('select');
-                var instances = M.FormSelect.init(elems/*, options*/);
+                var elems1 = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems1/*, options*/);
+                let baseURL = document.getElementById("baseurl");
+                let url = document.getElementById("url");
+                autocompleteinstanceBaseUrl = M.Autocomplete.init(baseURL);
+                autocompleteinstanceUrl = M.Autocomplete.init(url);
             });
 
             document.getElementById("req").onclick = function () {
-                document.getElementById("progressbar").classList.add('indeterminate');
-                document.getElementById("progressbar").classList.remove('determinate');
+//                document.getElementById("progressbar").classList.add('indeterminate');
                 const methodElement = document.getElementById("methods");
                 var method = methodElement.options[methodElement.selectedIndex].text;
                 var baseURL = document.getElementById("baseurl").value;
+                autocompleteDataBaseUrl = {...autocompleteDataBaseUrl, [baseURL]: null}//add icons here
+                autocompleteinstanceBaseUrl.updateData(autocompleteDataBaseUrl);
+
                 var url = document.getElementById("url").value;
+                autocompleteDataUrl = {...autocompleteDataUrl, [url]: null}
+                autocompleteinstanceUrl.updateData(autocompleteDataUrl);
+
                 var headersElement = document.getElementById("headers");
                 var bodyElement = document.getElementById("body");
                 var responseElementH = document.getElementById("responseH");
@@ -115,20 +128,21 @@
 
                 var axiosConfig = {method, url, baseURL, data, headers};
                 console.log("REQUEST::", axiosConfig);
+                var t1 = performance.now();
                 axios(axiosConfig)
                         .then((response) => {
+//                                document.getElementById("progressbar").classList.add('determinate');
+                            document.getElementById("progressbar").classList.remove('indeterminate');
+                            var t2 = performance.now();
+                            document.getElementById("executiontime").innerHTML = (t2 - t1).toFixed(2) + "ms";
                             console.log("RESPONSE::", response);
                             responseElementH.value = parsingJson(response.headers, JSON.stringify);
                             M.textareaAutoResize(responseElementH);
                             responseElementB.value = parsingJson(response.data, JSON.stringify);
                             M.textareaAutoResize(responseElementB);
-                            setTimeout(() => {
-                                document.getElementById("progressbar").classList.add('determinate');
-                                document.getElementById("progressbar").classList.remove('indeterminate');
-                            }, 1000)
                         })
                         .catch((error) => {
-                            M.toast({classes: "rounded card-panel red white-text text-darken-4", html: `<p>${error}</p>`})
+                            M.toast({classes: "rounded card-panel red white-text text-darken-4 z-depth-5", html: `<p><code>${error}</code></p>`})
                             console.error("ERROR::", error);
                             document.getElementById("progressbar").classList.add('determinate');
                             document.getElementById("progressbar").classList.remove('indeterminate');
