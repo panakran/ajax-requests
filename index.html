@@ -4,28 +4,17 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Compiled and minified CSS -->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
         <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.css">
+        <link rel="stylesheet" href="./css/main.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified JavaScript -->
-
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>-->
-        <script src="./node_modules/materialize-css/dist/js/materialize.js"></script>
-        <script src="./node_modules/axios/dist/axios.js"></script>
-        <style>    
-            .leftpadding{padding-left:15px;}
-        </style>    
-    </head>
-    <body>
-        <nav>
-            <div class="nav-wrapper blue leftpadding">
+        </head>
+        <body>
+            <nav>
+                <div class="nav-wrapper blue leftpadding">
                 <a class="brand-logo">Test CORS requests locally</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="https://github.com/panakran/ajax-requests"><strong>Github</strong></a></li>
-                    <!--                    <li><a href="badges.html">Components</a></li>
-                                        <li><a href="collapsible.html">JavaScript</a></li>-->
                 </ul>
             </div>
             <div class="progress white" >
@@ -55,11 +44,11 @@
                     <label for="url">Sub url</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="headers" class="materialize-textarea headers"></textarea>
+                    <textarea id="headers" class="materialize-textarea" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     <label for="headers">Headers</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="body" class="materialize-textarea body"></textarea>
+                    <textarea id="body" class="materialize-textarea" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     <label for="body">Body</label>
                 </div>
                 <a class="col s12 waves-effect waves-light btn btn-large z-depth-5" id="req"><i class="material-icons right">send</i><strong>Send request</strong></a>
@@ -68,10 +57,10 @@
                 <h4>Response <code id="executiontime" class="red-text"></code>
                 </h4>
                 <div class="input-field col s12">
-                    <textarea id="responseH" class="materialize-textarea" disabled ></textarea>
+                    <textarea id="responseH" class="materialize-textarea" disabled placeholder="Response headers"></textarea>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="responseB" class="materialize-textarea" disabled ></textarea>
+                    <textarea id="responseB" class="materialize-textarea" disabled placeholder="Response body"></textarea>
                 </div>
             </div>
         </div>
@@ -82,72 +71,10 @@
                 </div>
             </div>
         </footer>
-        <script>
-            function parsingJson(value, func) {
-                var returnedVal;
-                try {
-                    returnedVal = func === JSON.parse ? JSON.parse(value) : JSON.stringify(value, undefined, 4);
-                } catch (e) {
-                    returnedVal = value;
-                }
-                return returnedVal;
-            }
-
-            let autocompleteDataBaseUrl = {};
-            let autocompleteinstanceBaseUrl;
-            let autocompleteDataUrl = {};
-            let autocompleteinstanceUrl;
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems1 = document.querySelectorAll('select');
-                var instances = M.FormSelect.init(elems1/*, options*/);
-                let baseURL = document.getElementById("baseurl");
-                let url = document.getElementById("url");
-                autocompleteinstanceBaseUrl = M.Autocomplete.init(baseURL);
-                autocompleteinstanceUrl = M.Autocomplete.init(url);
-            });
-
-            document.getElementById("req").onclick = function () {
-//                document.getElementById("progressbar").classList.add('indeterminate');
-                const methodElement = document.getElementById("methods");
-                var method = methodElement.options[methodElement.selectedIndex].text;
-                var baseURL = document.getElementById("baseurl").value;
-                autocompleteDataBaseUrl = {...autocompleteDataBaseUrl, [baseURL]: null}//add icons here
-                autocompleteinstanceBaseUrl.updateData(autocompleteDataBaseUrl);
-
-                var url = document.getElementById("url").value;
-                autocompleteDataUrl = {...autocompleteDataUrl, [url]: null}
-                autocompleteinstanceUrl.updateData(autocompleteDataUrl);
-
-                var headersElement = document.getElementById("headers");
-                var bodyElement = document.getElementById("body");
-                var responseElementH = document.getElementById("responseH");
-                var responseElementB = document.getElementById("responseB");
-
-                var data = parsingJson(bodyElement.value, JSON.parse);
-                var headers = parsingJson(headersElement.value, JSON.parse);
-
-                var axiosConfig = {method, url, baseURL, data, headers};
-                console.log("REQUEST::", axiosConfig);
-                var t1 = performance.now();
-                axios(axiosConfig)
-                        .then((response) => {
-//                                document.getElementById("progressbar").classList.add('determinate');
-                            document.getElementById("progressbar").classList.remove('indeterminate');
-                            var t2 = performance.now();
-                            document.getElementById("executiontime").innerHTML = (t2 - t1).toFixed(2) + "ms";
-                            console.log("RESPONSE::", response);
-                            responseElementH.value = parsingJson(response.headers, JSON.stringify);
-                            M.textareaAutoResize(responseElementH);
-                            responseElementB.value = parsingJson(response.data, JSON.stringify);
-                            M.textareaAutoResize(responseElementB);
-                        })
-                        .catch((error) => {
-                            M.toast({classes: "rounded card-panel red white-text text-darken-4 z-depth-5", html: `<p><code>${error}</code></p>`})
-                            console.error("ERROR::", error);
-                            document.getElementById("progressbar").classList.add('determinate');
-                            document.getElementById("progressbar").classList.remove('indeterminate');
-                        });
-            };
-        </script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>-->
+        <script src="./node_modules/materialize-css/dist/js/materialize.js"></script>
+        <script src="./node_modules/axios/dist/axios.js"></script>
+        <script src="./js/main.js"></script>
     </body>
 </html>
