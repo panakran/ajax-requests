@@ -4,16 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node_modules/.bin/browser-sync start --server --files *",
+    "dev": "node_modules/.bin/webpack-dev-server --config webpack.config.js --env.NODE_ENV=dev --progress",
+    "prod": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=prod --progress",
+    "analyze": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=analyze --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "material-icons": "^0.2.3",
     "materialize-css": "^1.0.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.24.7"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "copy-webpack-plugin": "^4.4.1",
+    "css-loader": "^0.28.9",
+    "file-loader": "^1.1.11",
+    "style-loader": "^0.20.1",
+    "uglifyjs-webpack-plugin": "^1.2.4",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.2.0",
+    "webpack-bundle-analyzer": "^3.0.2",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   }
 }

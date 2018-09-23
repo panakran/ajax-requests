@@ -1,42 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>Ajax-requests</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!--<link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.css">-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified JavaScript -->
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-        <!--        <script src="./node_modules/materialize-css/dist/js/materialize.js"></script>
-                <script src="./node_modules/axios/dist/axios.js"></script>-->
-        <style>    
-            .leftpadding{padding-left:15px;}
-            textarea {overflow-y: visible!important;}
-            #headers{height: 6rem !important;}
-            #body{height: 12rem !important;}
-            #responseH{height: 14rem !important;}
-            #responseB{height: 26rem !important;}
-        </style>    
+        <script src="./bundle.min.js"></script>
     </head>
     <body>
-        <nav>
-            <div class="nav-wrapper blue leftpadding">
-                <a class="brand-logo">Test CORS ajax-requests</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="https://github.com/panakran/ajax-requests"><strong>Github</strong></a></li>
-                    <!--                    <li><a href="badges.html">Components</a></li>
-                                        <li><a href="collapsible.html">JavaScript</a></li>-->
-                </ul>
-            </div>
-            <div class="progress white" >
-                <div id="progressbar" class=" blue lighten-2 " style="width: 0%"></div>
-            </div>
-        </nav>
+        <div class="row">
+            <nav class="z-depth-3">
+                <div class="nav-wrapper blue leftpadding ">
+                    <a class="brand-logo">Test ajax-requests locally</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="https://github.com/panakran/ajax-requests"><strong>Github</strong></a></li>
+                    </ul>
+                </div>
+                <!--                <div class="progress white" >
+                                    <div id="progressbar" class=" blue lighten-2 " style="width: 0%"></div>
+                                </div>-->
+            </nav>
+        </div>
         <div class="row">
             <div class="col s6">
                 <h4>Request
@@ -60,11 +43,11 @@
                     <label for="url">Sub url</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="headers" class="materialize-textarea headers"></textarea>
+                    <textarea id="headers" class="materialize-textarea" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     <label for="headers">Headers</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="body" class="materialize-textarea body"></textarea>
+                    <textarea id="body" class="materialize-textarea" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     <label for="body">Body</label>
                 </div>
                 <a class="col s12 waves-effect waves-light btn btn-large z-depth-5" id="req"><i class="material-icons right">send</i><strong>Send request</strong></a>
@@ -73,188 +56,19 @@
                 <h4>Response <code id="executiontime" class="red-text"></code>
                 </h4>
                 <div class="input-field col s12">
-                    <textarea id="responseH" class="materialize-textarea" disabled ></textarea>
+                    <textarea id="responseH" class="materialize-textarea" disabled placeholder="Response headers"></textarea>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="responseB" class="materialize-textarea" disabled ></textarea>
+                    <textarea id="responseB" class="materialize-textarea" disabled placeholder="Response body"></textarea>
                 </div>
             </div>
         </div>
-        <footer class="page-footer blue z-depth-3">
+        <footer class="page-footer blue z-depth-4">
             <div class="footer-copyright">
                 <div class="leftpadding">
                     <span class="white-text">Powered by </span><a class="white-text" href="https://github.com/Dogfalo/materialize"><strong>Materialize</strong></a> | <a class="white-text" href="https://github.com/axios/axios"><strong>Axios</strong></a> | <a class="white-text" href="https://github.com/BrowserSync/browser-sync"><strong>Browser-sync</strong></a>
                 </div>
             </div>
         </footer>
-        <script>
-            /**
-             * Initial global constants
-             */
-            const selectElem = document.querySelectorAll('select');
-            const baseURL = document.getElementById("baseurl");
-            const url = document.getElementById("url");
-            const autocompleteinstanceBaseUrl = M.Autocomplete.init(baseURL);
-            const autocompleteinstanceUrl = M.Autocomplete.init(url);
-
-
-            /**
-             * Initialize method sets up the select dropdown
-             */
-            const initMethod = () => M.FormSelect.init(selectElem);
-
-            /**
-             * Executes a funciton passed with its params if exeption throwed return the first param passed
-             * @param {type} func
-             * @param {type} params
-             * @return {unresolved}
-             */
-            const catchJsonException = (func, ...params) => {
-                try {
-                    return func(...params);
-                } catch (e) {
-                    return params;
-                }
-            };
-
-            /**
-             * Executes native JSON.stringify but with error catching
-             * @param {type} value
-             */
-            const stringifyJSON = (value) => catchJsonException(JSON.stringify, value, undefined, 4);
-
-            /**
-             * Executes native JSON.parse but with error catching
-             * @param {type} value
-             */
-            const parseJson = (value) => catchJsonException(JSON.parse, value);
-
-            /**
-             * main render method we pass the object with new elements and values to render
-             * we also pass success true/false to handle rendering for success/error request
-             * @param {type} renderObj
-             * @return {undefined}
-             */
-            const renderDOM = (renderObj) => {
-                renderNewInnerHTML(renderObj.timerElement, createTimerText(renderObj.finalRequestTime));
-                addToAutocompleteInstance(autocompleteinstanceBaseUrl, renderObj.baseURL);
-                addToAutocompleteInstance(autocompleteinstanceUrl, renderObj.url);
-                if (renderObj.success) {
-                    renderNewValue(renderObj.responseElementH, stringifyJSON(renderObj.response.headers));
-                    renderNewValue(renderObj.responseElementB, stringifyJSON(renderObj.response.data));
-                } else {
-                    printErrorMessage(renderObj.response);
-                }
-            };
-
-            /**
-             * adds a new object to autocomplete element
-             * @param {type} instance
-             * @param {type} newElement
-             */
-            const addToAutocompleteInstance = (instance, newElement) =>
-                instance.updateData({...instance.options.data, [newElement]: null});
-            /**
-             * prints error messages to DOM through M.toast method
-             * @param {type} msg
-             * @return {Function}
-             */
-            const printErrorMessage = (msg) =>
-                M.toast({classes: "rounded card-panel red white-text text-darken-4 z-depth-5", html: `<p><code>${msg}</code></p>`});
-
-            /**
-             * create text that will render to timer element
-             * @param {type} time
-             * @return {String}
-             */
-            const createTimerText = (time) =>
-                (time).toFixed(2) + "ms";
-
-            /**
-             * render new value to innerHTML
-             * @param {type} element
-             * @param {type} newValue
-             */
-            const renderNewInnerHTML = (element, newValue) =>
-                element.innerHTML = newValue;
-
-            /**
-             * render new value to value
-             * @param {type} element
-             * @param {type} newValue
-             */
-            const renderNewValue = (element, newValue) =>
-                element.value = newValue;
-            /**
-             * calculate exec time based on start and end time(simple sub)
-             * @param {type} endT
-             * @param {type} startT
-             * @return {Number}
-             */
-            const calcExecTime = (endT, startT) => endT - startT;
-
-            initMethod();
-
-            /**
-             * on click submit button 
-             * 1. we prepare the axios config
-             * 2. on response we call renderDOM to update view
-             * @return {undefined}
-             */
-            document.getElementById("req").onclick = () => {
-                const methodElement = document.getElementById("methods");
-                const method = methodElement.options[methodElement.selectedIndex].text;
-                const baseURL = document.getElementById("baseurl").value;
-                const url = document.getElementById("url").value;
-                const headersElement = document.getElementById("headers");
-                const bodyElement = document.getElementById("body");
-                const data = parseJson(bodyElement.value);
-                const headers = parseJson(headersElement.value);
-
-                let responseElementH = document.getElementById("responseH");
-                let responseElementB = document.getElementById("responseB");
-                let timerElement = document.getElementById("executiontime");
-
-
-                const axiosConfig = {method, url, baseURL, data, headers};
-                console.log("REQUEST::", axiosConfig);
-                const startTime = performance.now();
-                axios(axiosConfig)
-                        .then((response) => {
-                            const endTime = performance.now();
-                            const finalRequestTime = calcExecTime(endTime, startTime);
-                            console.log("RESPONSE::", response);
-                            const renderObject = {
-                                responseElementH,
-                                responseElementB,
-                                timerElement,
-                                response,
-                                baseURL,
-                                url,
-                                finalRequestTime,
-                                success: true
-                            };
-
-                            renderDOM(renderObject);
-                        })
-                        .catch((response) => {
-                            const endTime = performance.now();
-                            const finalRequestTime = calcExecTime(endTime, startTime);
-                            console.error("ERROR::", response);
-
-                            const renderObject = {
-                                responseElementH,
-                                responseElementB,
-                                timerElement,
-                                response,
-                                baseURL,
-                                url,
-                                finalRequestTime,
-                                success: false
-                            };
-                            renderDOM(renderObject);
-                        });
-            };
-        </script>
     </body>
 </html>

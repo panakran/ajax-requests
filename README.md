@@ -1,31 +1,44 @@
 # Testing http requests locally through browser
+
 > Used to test locally CORS requests
 
-## Running locally
+## Installation
 
-- install 
+#### Install 
 
 ```
 npm install
 ```
 
-- run locally (default at localhost:3000)
+#### Run locally (localhost:8081)
 
 ```
-npm run start
+npm run dev
+```
+
+#### Generate prod build under docs
+
+```
+npm run prod
+```
+
+#### Analyze build
+
+```
+npm run analyze
 ```
 
 ## Requests options
 
-- METHOD
+- Methods
     + GET
     + POST
     + PUT
     + DELETE
-- BASE URL
-- URL
-- HEADERS (pass json object)
-- BODY (pass json object)
+- Base url
+- Url
+- Headers (json object)
+- Body (pass json object)
 
 ## Notes
 
