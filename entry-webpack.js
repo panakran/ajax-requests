@@ -3,5 +3,6 @@ require("./css/main.css");
 require("./node_modules/material-icons/iconfont/material-icons.css");
 
 require("materialize-css");
-require("./node_modules/axios/dist/axios.js");
+require("axios");
 require("./js/main.js");
+require("./js/utils.js");
