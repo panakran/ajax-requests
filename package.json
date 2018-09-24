@@ -7,6 +7,7 @@
     "dev": "node_modules/.bin/webpack-dev-server --config webpack.config.js --env.NODE_ENV=dev --progress",
     "prod": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=prod --progress",
     "analyze": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=analyze --progress",
+    "generate-desktop": "node_modules/.bin/nativefier --insecure \"https://panakran.github.io/ajax-requests/\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -24,6 +25,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.9",
     "file-loader": "^1.1.11",
+    "nativefier": "^7.6.7",
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^1.1.1",

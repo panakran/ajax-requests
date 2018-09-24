@@ -11,7 +11,10 @@ const Constants = {
     BODY_SELECTOR: "body",
     METHODS_SELECTOR: "methods",
     SELECT_TAG_SELECTOR: "select",
-    REQUEST_SELECTOR: "req"
+    REQUEST_SELECTOR: "req",
+    STATUS_SELECTOR: "status",
+    ERROR_STATUS_CLASS:["chip", "red", "white-text", "rounded", "right"],
+    SUCCESS_STATUS_CLASS:["chip", "green", "white-text", "rounded", "right"]
 };
 
 module.exports = Constants;

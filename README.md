@@ -1,6 +1,6 @@
 # Testing http requests locally through browser
 
-> Used to test locally CORS requests
+> Used to test locally requests
 
 ## Installation
 
@@ -28,6 +28,12 @@ npm run prod
 npm run analyze
 ```
 
+#### Generate desktop app
+
+```
+npm run generate-desktop
+```
+
 ## Requests options
 
 - Methods
@@ -38,8 +44,14 @@ npm run analyze
 - Base url
 - Url
 - Headers (json object)
-- Body (pass json object)
+- Body (json object)
 
 ## Notes
 
 - Uses axios internally [docs](https://github.com/axios/axios)
+
+## TODO
+
+- add left side menu
+- add persist functionality (history, saved requests, autocomplete)
+- add tests

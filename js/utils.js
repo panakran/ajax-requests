@@ -41,6 +41,14 @@ const Utils = () => {
      */
     const createTimerText = (time) =>
         (time).toFixed(2) + "ms";
+        
+    /**
+     * create text that will render to status element
+     * @param {type} time
+     * @return {String}
+     */
+    const createStatusText = (text) =>
+        `Status : ${text}`;
 
     /**
      * calculate exec time based on start and end time(simple sub)
@@ -50,6 +58,6 @@ const Utils = () => {
      */
     const getExecTime = (startT) => performance.now() - startT;
 
-    return {stringifyJSON, parseJSON, printErrorMessage, createTimerText, getExecTime};
+    return {stringifyJSON, parseJSON, printErrorMessage, createTimerText, createStatusText, getExecTime};
 };
 module.exports = Utils();

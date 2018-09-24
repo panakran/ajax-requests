@@ -10,6 +10,22 @@ const ready = (fn) =>
 
 ready(() => {
 
+    let persistObject = {
+        history: [
+//            {
+//                method: "", url: "", baseURL: "", data: "", headers: ""
+//            }
+        ],
+        saved: [
+//            {
+//                method: "", url: "", baseURL: "", data: "", headers: ""
+//            }
+        ],
+        acBaseUrl: ["url1"],
+        acUrl: ["url1"]
+    };
+
+
     /** 
      * Initial global constants
      */
@@ -23,6 +39,10 @@ ready(() => {
     const initMethod = () => {
         AcUtils.init(inputDOM, M);
         M.FormSelect.init(inputDOM.selectElements);
+//        
+//        var elems = document.querySelectorAll('.sidenav');
+//    var instances = M.Sidenav.init(elems);
+//        
     };
 
 
@@ -41,10 +61,30 @@ ready(() => {
         AcUtils.addToBaseUrl(baseURL);
         AcUtils.addToUrl(url);
         if (success) {
+            console.log("RESPONSE SUCCESS::", response);
             DomUtils.renderNewValue(outputDOM.responseElementH, Utils.stringifyJSON(response.headers));
             DomUtils.renderNewValue(outputDOM.responseElementB, Utils.stringifyJSON(response.data));
+            DomUtils.renderStatusTag(outputDOM.statusElement, response.status);
         } else {
-            Utils.printErrorMessage(M.toast, response);
+            if (response.response) {
+                console.log("RESPONSE ERROR::", response);
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                DomUtils.renderNewValue(outputDOM.responseElementH, Utils.stringifyJSON(response.response.headers));
+                DomUtils.renderNewValue(outputDOM.responseElementB, response.response.data);
+                DomUtils.renderStatusTag(outputDOM.statusElement, response.response.status);
+            } else if (response.request) {
+                console.log("RESPONSE ERROR::", response);
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                DomUtils.renderNewValue(outputDOM.responseElementH, Utils.stringifyJSON(response.config.headers));
+                Utils.printErrorMessage(M.toast, response);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("RESPONSE ERROR::", response);
+                Utils.printErrorMessage(M.toast, response.message);
+            }
         }
     };
 
@@ -60,10 +100,13 @@ ready(() => {
         /**
          * Getting DOM elements input values
          */
-
         const axiosConfig = DomUtils.readDOMValues(inputDOM);
         console.log("REQUEST::", axiosConfig);
         const startTime = performance.now();
+        
+//        persistObject.history = [...persistObject.history, axiosConfig];
+//        persistObject.history.forEach(x=> document.getElementById("slide-out").appendChild("<li><a href=\"\">dsad</a></li>"))
+//        console.log("persistObject::", persistObject);
         axios(axiosConfig)
                 .then((response) => renderDOMValues(response, Utils.getExecTime(startTime), true))
                 .catch((error) => renderDOMValues(error, Utils.getExecTime(startTime), false));
