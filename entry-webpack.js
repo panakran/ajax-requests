@@ -4,5 +4,4 @@ require("./node_modules/material-icons/iconfont/material-icons.css");
 
 require("materialize-css");
 require("axios");
-require("./js/main.js");
-require("./js/utils.js");
+require("./js/main");

@@ -26,31 +26,6 @@ const Utils = () => {
      */
     const parseJSON = (value) => catchJsonException(JSON.parse, value);
 
-
-
-    /**
-     * render new value to innerHTML
-     * @param {type} element
-     * @param {type} newValue
-     */
-    const renderNewInnerHTML = (element, newValue) =>
-        element.innerHTML = newValue;
-
-    /**
-     * render new value to value
-     * @param {type} element
-     * @param {type} newValue
-     */
-    const renderNewValue = (element, newValue) =>
-        element.value = newValue;
-
-    /**
-     * adds a new object to autocomplete element
-     * @param {type} instance
-     * @param {type} newElement
-     */
-    const addToAutocompleteInstance = (instance, newElement) =>
-        instance.updateData({...instance.options.data, [newElement]: null});
     /**
      * prints error messages to DOM through passed func
      * @param {type} msgFunc
@@ -75,6 +50,6 @@ const Utils = () => {
      */
     const getExecTime = (startT) => performance.now() - startT;
 
-    return {stringifyJSON, parseJSON, renderNewInnerHTML, renderNewValue, addToAutocompleteInstance, printErrorMessage, createTimerText, getExecTime};
+    return {stringifyJSON, parseJSON, printErrorMessage, createTimerText, getExecTime};
 };
 module.exports = Utils();
