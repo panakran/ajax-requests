@@ -5,7 +5,7 @@ textarea {overflow-y: visible!important;}
 #responseH{height: 14rem !important;}
 #responseB{height: 26rem !important;}
 
-/*header, main, footer {
+header, main, footer {
     padding-left: 300px;
 }
 
@@ -13,4 +13,4 @@ textarea {overflow-y: visible!important;}
     header, main, footer {
         padding-left: 0;
     }
-}*/
+}

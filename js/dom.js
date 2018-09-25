@@ -1,29 +1,43 @@
-const Constants = require("./constants");
-const Utils = require("./utils.js");
+import{
+BASE_URL_SELECTOR,
+        URL_SELECTOR,
+        RESPONSE_HEADER_SELECTOR,
+        RESPONSE_BODY_SELECTOR,
+        EXEC_TIME_SELECTOR,
+        HEADERS_SELECTOR,
+        BODY_SELECTOR,
+        METHODS_SELECTOR,
+        SELECT_TAG_SELECTOR,
+        REQUEST_SELECTOR,
+        STATUS_SELECTOR,
+        ERROR_STATUS_CLASS,
+        SUCCESS_STATUS_CLASS
+} from "./constants.js";
+import {Utils} from "./utils.js";
 
-const DomUtils = () => {
-    const getInputElementsObj = () => {
+const DomUtils = {
+    getInputElementsObj: () => {
         return {
-            selectElements: document.querySelectorAll(Constants.SELECT_TAG_SELECTOR),
-            methodElement: document.getElementById(Constants.METHODS_SELECTOR),
-            baseURLElement: document.getElementById(Constants.BASE_URL_SELECTOR),
-            urlElement: document.getElementById(Constants.URL_SELECTOR),
-            headersElement: document.getElementById(Constants.HEADERS_SELECTOR),
-            bodyElement: document.getElementById(Constants.BODY_SELECTOR),
-            requestElement: document.getElementById(Constants.REQUEST_SELECTOR),
-            statusElement: document.getElementById(Constants.STATUS_SELECTOR)
+            selectElements: document.querySelectorAll(SELECT_TAG_SELECTOR),
+            methodElement: document.getElementById(METHODS_SELECTOR),
+            baseURLElement: document.getElementById(BASE_URL_SELECTOR),
+            urlElement: document.getElementById(URL_SELECTOR),
+            headersElement: document.getElementById(HEADERS_SELECTOR),
+            bodyElement: document.getElementById(BODY_SELECTOR),
+            requestElement: document.getElementById(REQUEST_SELECTOR),
+            statusElement: document.getElementById(STATUS_SELECTOR)
         };
-    };
-    const getOutputElementsObj = () => {
+    },
+    getOutputElementsObj: () => {
         return {
-            responseElementH: document.getElementById(Constants.RESPONSE_HEADER_SELECTOR),
-            responseElementB: document.getElementById(Constants.RESPONSE_BODY_SELECTOR),
-            timerElement: document.getElementById(Constants.EXEC_TIME_SELECTOR),
-            statusElement: document.getElementById(Constants.STATUS_SELECTOR)
+            responseElementH: document.getElementById(RESPONSE_HEADER_SELECTOR),
+            responseElementB: document.getElementById(RESPONSE_BODY_SELECTOR),
+            timerElement: document.getElementById(EXEC_TIME_SELECTOR),
+            statusElement: document.getElementById(STATUS_SELECTOR)
         };
-    };
+    },
 
-    const readDOMValues = (inputDOM) => {
+    readDOMValues: (inputDOM) => {
 
         const method = inputDOM.methodElement.options[inputDOM.methodElement.selectedIndex].text;
         const baseURL = inputDOM.baseURLElement.value;
@@ -31,45 +45,48 @@ const DomUtils = () => {
         const headers = Utils.parseJSON(inputDOM.headersElement.value);
         const data = Utils.parseJSON(inputDOM.bodyElement.value);
         return {method, url, baseURL, data, headers};
-    };
+    },
 
     /**
      * render new value to innerHTML
      * @param {type} element
      * @param {type} newValue
      */
-    const renderNewInnerHTML = (element, newValue) =>
+    renderNewInnerHTML: (element, newValue) => {
         element.innerHTML = newValue;
+    },
 
     /**
      * render new value to value
      * @param {type} element
      * @param {type} newValue
      */
-    const renderNewValue = (element, newValue) =>
+    renderNewValue: (element, newValue) => {
         element.value = newValue;
+    },
     /**
      * render new status and apply classes
      * @param {type} element
      * @param {type} newValue
      */
-    const addClassAndRender = (element, newValue, newClassesToApply) => {
+    addClassAndRender: function(element, newValue, newClassesToApply) {
         element.classList.add(...newClassesToApply);
-        renderNewInnerHTML(element, Utils.createStatusText(newValue));
-    };
+        this.renderNewInnerHTML(element, Utils.createStatusText(newValue));
+    },
     /**
      * render new value to value
      * @param {type} element
      * @param {type} newValue
      */
-    const renderStatusTag = (element, newValue) => {
+    renderStatusTag: function(element, newValue) {
         element.classList = [];
         newValue < 400
-                ? addClassAndRender(element, newValue, Constants.SUCCESS_STATUS_CLASS)
-                : addClassAndRender(element, newValue, Constants.ERROR_STATUS_CLASS);
-    };
+                ? this.addClassAndRender(element, newValue, SUCCESS_STATUS_CLASS)
+                : this.addClassAndRender(element, newValue, ERROR_STATUS_CLASS);
+    }
 
-    return {getInputElementsObj, getOutputElementsObj, readDOMValues, renderNewInnerHTML, renderNewValue, renderStatusTag};
+//    return {getInputElementsObj, getOutputElementsObj, readDOMValues, renderNewInnerHTML, renderNewValue, renderStatusTag};
 };
 
-module.exports = DomUtils();
+export {DomUtils}
+//module.exports = DomUtils();
