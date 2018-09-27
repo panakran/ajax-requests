@@ -9,7 +9,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = (env) => {
   console.log('NODE_ENV: ', env.NODE_ENV); // 'local'
-  console.log('Production: ', env.production); // true
   const ENV = env.NODE_ENV;
   let plugins = [];
   let enviroment;

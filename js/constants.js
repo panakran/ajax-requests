@@ -15,6 +15,8 @@ const STATUS_SELECTOR = 'status';
 const SAVE_SELECTOR = 'save';
 const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
 const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
+const HISTORY_ELEMENTS_SELECTOR = '#history > li';
+const CLEAR_HISTORY_SELECTOR = 'clearhistory';
 const DIV = 'div';
 const UL = 'ul';
 const LI = 'li';
@@ -35,5 +37,6 @@ export {
   SAVE_SELECTOR,
   ERROR_STATUS_CLASS,
   SUCCESS_STATUS_CLASS,
-
+  HISTORY_ELEMENTS_SELECTOR,
+  CLEAR_HISTORY_SELECTOR,
 };

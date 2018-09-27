@@ -20,7 +20,7 @@ const Utils = {
   stringifyJSON: (value) => {
     return catchJsonException(JSON.stringify, value, undefined, 4);
   },
-
+  
   /**
   * Executes native JSON.parse but with error catching
   * @param {type} value
@@ -28,7 +28,7 @@ const Utils = {
   parseJSON: (value) => {
     return catchJsonException(JSON.parse, value);
   },
-
+  
   /**
   * prints error messages to DOM through passed func
   * @param {type} msgFunc
@@ -37,7 +37,7 @@ const Utils = {
   printErrorMessage: (msgFunc, msg) => {
     msgFunc({classes: 'rounded card-panel red white-text text-darken-4 z-depth-5', html: `<p><code>${msg}</code></p>`});
   },
-
+  
   /**
   * create text that will render to timer element
   * @param {type} time
@@ -46,7 +46,7 @@ const Utils = {
   createTimerText: (time) => {
     return `${(time).toFixed(2)}ms`;
   },
-
+  
   /**
   * create text that will render to status element
   * @param {type} time
@@ -55,7 +55,7 @@ const Utils = {
   createStatusText: (text) => {
     return `Status : ${text}`;
   },
-
+  
   /**
   * calculate exec time based on start and end time(simple sub)
   * @param {type} endT
@@ -64,7 +64,9 @@ const Utils = {
   */
   getExecTime: (startT) => {
     return performance.now() - startT;
-  }
+  },
+  extractFloat: (str) => Number(str.replace("ms", "").replace(/[^0-9\.]+/g,"")),
+  extractStatusCode: (str) => str.replace("Status : ", "")
 };
 
 export { Utils };

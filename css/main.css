@@ -6,7 +6,10 @@ textarea {overflow-y: visible!important;}
 #responseB{height: 26rem !important;}
 
 header, main, footer {
-    padding-left: 300px;
+    padding-left: 400px;
+}
+.sidenav{
+  width:400px ;
 }
 
 @media only screen and (max-width : 992px) {

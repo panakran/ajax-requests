@@ -52,6 +52,6 @@ npm run generate-desktop
 
 ## TODO
 
-- add left side menu
-- add persist functionality (history, saved requests, autocomplete)
 - add tests
+- add all request methods
+- add remove button for each saved
