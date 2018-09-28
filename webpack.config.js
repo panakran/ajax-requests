@@ -1,14 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const gracefulFs = require('graceful-fs');
-
 gracefulFs.gracefulify(fs);
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const entryPath = './entry-webpack.js';
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+
 module.exports = (env) => {
-  console.log('NODE_ENV: ', env.NODE_ENV); // 'local'
+  console.log('NODE_ENV: ', env.NODE_ENV);
   const ENV = env.NODE_ENV;
   let plugins = [];
   let enviroment;
@@ -42,22 +42,14 @@ module.exports = (env) => {
         {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-            options: {// used to support all browsers @https://webpack.js.org/loaders/babel-loader/
-              presets: ['babel-preset-env'],
-              plugins: ['transform-object-rest-spread'],
-            }
-          }
         },
         {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/, //used to load bootstrap extra files used in app
+          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
           loader: 'url-loader?limit=100000',
         }
       ]
     },
     plugins,
-
     entry: {
       [bundleName]: entryPath,
     },
@@ -65,6 +57,5 @@ module.exports = (env) => {
       path: __dirname,
       filename: exportPath,
     }
-
   };
 };

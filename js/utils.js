@@ -1,3 +1,5 @@
+import { M } from '../node_modules/materialize-css/dist/js/materialize'
+
 /**
 * Executes a funciton passed with its params if exeption throwed return the first param passed
 * @param {type} func
@@ -34,8 +36,8 @@ const Utils = {
   * @param {type} msgFunc
   * @param {type} msg
   */
-  printErrorMessage: (msgFunc, msg) => {
-    msgFunc({classes: 'rounded card-panel red white-text text-darken-4 z-depth-5', html: `<p><code>${msg}</code></p>`});
+  printErrorMessage: (msg) => {
+    M.toast({classes: 'rounded card-panel red white-text text-darken-4 z-depth-5', html: `<p><code>${msg}</code></p>`});
   },
   
   /**

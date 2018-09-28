@@ -17,10 +17,7 @@ const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
 const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
 const HISTORY_ELEMENTS_SELECTOR = '#history > li';
 const CLEAR_HISTORY_SELECTOR = 'clearhistory';
-const DIV = 'div';
-const UL = 'ul';
-const LI = 'li';
-const SPAN = 'span';
+const EMPTY_PERSIST_OBJECT = { history: [], saved: [], acBaseUrl: [], acUrl: [] };
 
 export {
   BASE_URL_SELECTOR,
@@ -39,4 +36,5 @@ export {
   SUCCESS_STATUS_CLASS,
   HISTORY_ELEMENTS_SELECTOR,
   CLEAR_HISTORY_SELECTOR,
+  EMPTY_PERSIST_OBJECT
 };

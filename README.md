@@ -34,6 +34,12 @@ npm run analyze
 npm run generate-desktop
 ```
 
+#### Run tests
+
+```
+npm run test
+```
+
 ## Requests options
 
 - Methods
@@ -52,6 +58,5 @@ npm run generate-desktop
 
 ## TODO
 
-- add tests
 - add all request methods
 - add remove button for each saved

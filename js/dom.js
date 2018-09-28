@@ -10,24 +10,34 @@ import {
   REQUEST_SELECTOR,
   STATUS_SELECTOR,
   HISTORY_ELEMENTS_SELECTOR,
+  EMPTY_PERSIST_OBJECT,
+  SAVE_SELECTOR,
+  CLEAR_HISTORY_SELECTOR
 } from './constants';
 import { Utils } from './utils.js';
 import { AcUtils } from './autocomplete.js';
 import { DomUtils } from './domutils.js';
-import M from 'materialize-css';
 
-let methodElement = document.getElementById(METHODS_SELECTOR);
-let baseURLElement = document.getElementById(BASE_URL_SELECTOR);
-let urlElement = document.getElementById(URL_SELECTOR);
-let headersElement = document.getElementById(HEADERS_SELECTOR);
-let bodyElement = document.getElementById(BODY_SELECTOR);
-let requestElement = document.getElementById(REQUEST_SELECTOR);
+let methodElement;
+let baseURLElement;
+let urlElement ;
+let headersElement;
+let bodyElement;
+let requestElement;
 
-let responseElementH =  document.getElementById(RESPONSE_HEADER_SELECTOR);
-let responseElementB =  document.getElementById(RESPONSE_BODY_SELECTOR);
-let timerElement =  document.getElementById(EXEC_TIME_SELECTOR);
-let statusElement =  document.getElementById(STATUS_SELECTOR);
+let responseElementH;
+let responseElementB;
+let timerElement;
+let statusElement;
 
+/**
+* renders one side bar object to side bar element based on isHistory input
+* also adds it to persistObject
+* values passed with mainObject
+* @param {*} persistObject 
+* @param {*} isHistory 
+* @param {*} mainObject 
+*/
 const renderSideBarByInputs = (persistObject, isHistory, mainObject) => {
   isHistory
   ?persistObject.history = [...persistObject.history, mainObject]
@@ -37,7 +47,7 @@ const renderSideBarByInputs = (persistObject, isHistory, mainObject) => {
   const methodElement = Dom.createElement('a');
   DomUtils.renderSideBarText(methodElement, mainObject);
   sideBarElement.appendChild(methodElement);
-  sideBarElement.onclick = renderInputValues(mainObject);
+  sideBarElement.onclick = renderDOM(mainObject);
   
   isHistory
   ?document.getElementById('history').appendChild(sideBarElement)
@@ -45,7 +55,11 @@ const renderSideBarByInputs = (persistObject, isHistory, mainObject) => {
 }
 
 
-// https://stackoverflow.com/questions/49833550/set-value-of-drop-down-select-with-materialize-css-1-0-0-without-jquery
+/**
+*Bug fix for materilize we need to dispatch event when we set a select tag value through code 
+* https://stackoverflow.com/questions/49833550/set-value-of-drop-down-select-with-materialize-css-1-0-0-without-jquery
+* @param {*} element 
+*/
 const dispatchSelectEvent = (element) =>{
   let event;
   if (typeof(Event) === 'function') {
@@ -58,7 +72,12 @@ const dispatchSelectEvent = (element) =>{
 } 
 
 
-const renderInputValues = (mainObject)=>{
+/**
+* function assigned on side bar elements
+* we need to pass values of each side bar element when we trigger the onclick
+* @param {*} mainObject 
+*/
+const renderDOM = (mainObject)=>{
   const helperFunc=() =>{
     const values = mainObject;
     const inputDOM = Dom.getInputElementsObj();
@@ -90,7 +109,7 @@ const renderInputValues = (mainObject)=>{
 };
 
 const Dom = {
-  init:()=>{
+  initialize:()=>{
     /**
     * Initialize input elements
     */
@@ -109,13 +128,21 @@ const Dom = {
     timerElement =  document.getElementById(EXEC_TIME_SELECTOR);
     statusElement =  document.getElementById(STATUS_SELECTOR);
   },
+  /**
+  * returns the inputs elements
+  */
   getInputElementsObj: () => {
     return { methodElement, baseURLElement, urlElement, headersElement, bodyElement, requestElement };
   },
+  /**
+  * returns the οθτputs elements
+  */
   getOutputElementsObj: () => {
     return {responseElementH,responseElementB,timerElement,statusElement};
   },
-  
+  /**
+  * returns input values 
+  */
   getInputValues: function() {
     const inputDOM = this.getInputElementsObj();
     const method = inputDOM.methodElement.options[inputDOM.methodElement.selectedIndex].text;
@@ -125,6 +152,9 @@ const Dom = {
     const data = Utils.parseJSON(inputDOM.bodyElement.value);
     return {method,url,baseURL,data,headers};
   },
+  /**
+  * returns output values 
+  */
   getOutputValues: function() {
     const outputDOM = this.getOutputElementsObj();
     const responseH = Utils.parseJSON(outputDOM.responseElementH.value);
@@ -136,6 +166,9 @@ const Dom = {
   createElement: function(tag){
     return document.createElement(tag);
   },
+  /**
+  * renders the results on output elements and adds a history onject to persist object
+  */
   renderOutputValues: function(response, finalRequestTime, persistObject, success){
     let outputDOM = this.getOutputElementsObj();
     
@@ -162,11 +195,11 @@ const Dom = {
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
         outputDOM.responseElementH.value = Utils.stringifyJSON(response.config.headers);
-        Utils.printErrorMessage(M.toast, response);
+        Utils.printErrorMessage(response);
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log('RESPONSE ERROR::', response);
-        Utils.printErrorMessage(M.toast, response.message);
+        Utils.printErrorMessage(response.message);
       }
     }
     DomUtils.renderTimerTag(outputDOM.timerElement, finalRequestTime);
@@ -179,15 +212,30 @@ const Dom = {
     renderSideBarByInputs(persistObject, isHistory, mainObject);
     
   },
+  /**
+  * clears all history elements
+  */
   clearHistoryElements: (persistObject)=>{
     persistObject.history = [];
     [...document.querySelectorAll(HISTORY_ELEMENTS_SELECTOR)]
     .forEach(x=>x.parentNode.removeChild(x));
   },
+  /**
+  * renders the persist object when app starts
+  */
   renderPersistObject: function(persistObject){
-    let clearPersistObject = { history: [],saved: [],acBaseUrl: [],acUrl: [] };
-    persistObject.history.forEach(x=>renderSideBarByInputs(clearPersistObject, true, x));
-    persistObject.saved.forEach(x=>renderSideBarByInputs(clearPersistObject, false, x));
+    persistObject.history.forEach(x=>renderSideBarByInputs(EMPTY_PERSIST_OBJECT, true, x));
+    persistObject.saved.forEach(x=>renderSideBarByInputs(EMPTY_PERSIST_OBJECT, false, x));
+  },
+  getAutocompleteElements: () => {
+    return { baseURLElement: document.getElementById(BASE_URL_SELECTOR), urlElement: document.getElementById(URL_SELECTOR) };
+  },
+  getElementsWithEventHandlers: () => {
+    return {
+      requestElement: document.getElementById(REQUEST_SELECTOR),
+      saveElement: document.getElementById(SAVE_SELECTOR),
+      clearHistoryElement: document.getElementById(CLEAR_HISTORY_SELECTOR)
+    }
   }
 };
 
