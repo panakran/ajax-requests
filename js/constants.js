@@ -15,7 +15,7 @@ const STATUS_SELECTOR = 'status';
 const SAVE_SELECTOR = 'save';
 const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
 const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
-const HISTORY_ELEMENTS_SELECTOR = '#history > li';
+const HISTORY_ELEMENTS_SELECTOR = '#history > div';
 const CLEAR_HISTORY_SELECTOR = 'clearhistory';
 const EMPTY_PERSIST_OBJECT = { history: [], saved: [], acBaseUrl: [], acUrl: [] };
 

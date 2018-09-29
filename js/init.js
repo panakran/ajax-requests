@@ -20,7 +20,7 @@ const InitializePersistObj = ()=>{
   let data = Persist.loadFromLocalStorage();
   let persistObject;
   if (data === null){
-    persistObject = EMPTY_PERSIST_OBJECT;
+    persistObject = {history:[], saved:[]};
   }else{
     persistObject = data;
   }

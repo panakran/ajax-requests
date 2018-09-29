@@ -43,15 +43,46 @@ const renderSideBarByInputs = (persistObject, isHistory, mainObject) => {
   ?persistObject.history = [...persistObject.history, mainObject]
   :persistObject.saved = [...persistObject.saved, mainObject];
   
-  const sideBarElement = Dom.createElement('li');
+  // const sideBarElement = Dom.createElement('li');
   const methodElement = Dom.createElement('a');
-  DomUtils.renderSideBarText(methodElement, mainObject);
-  sideBarElement.appendChild(methodElement);
-  sideBarElement.onclick = renderDOM(mainObject);
   
-  isHistory
-  ?document.getElementById('history').appendChild(sideBarElement)
-  :document.getElementById('saved').appendChild(sideBarElement);
+  if (isHistory){
+    methodElement.classList.add("col");
+    methodElement.classList.add("s12");
+    DomUtils.renderSideBarText(methodElement, mainObject);
+    let div = Dom.createElement('div');
+    div.classList.add("row");
+    div.appendChild(methodElement);
+    document.getElementById('history').appendChild(div);
+    
+  }else{
+    const uniqueId = Math.random(1000000);
+    mainObject.id = uniqueId
+    methodElement.classList.add("col");
+    methodElement.classList.add("s11");
+    let icon = Dom.createElement('i');
+    icon.classList.add("material-icons", "black-text", "white", "right");
+    icon.innerHTML = "clear";
+    let close = Dom.createElement('a');
+    close.setAttribute("href", "#");
+    // close.setAttribute("onclick", "destroyElement(this)");
+    close.setAttribute("id", uniqueId);
+    close.classList.add("col", "s1", "btn", "black-text", "white", "z-depth-0");
+    close.appendChild(icon);
+    DomUtils.renderSideBarText(methodElement, mainObject);
+    let div = Dom.createElement('div');
+    div.classList.add("row");
+    
+    div.appendChild(methodElement);
+    div.appendChild(close);
+    document.getElementById('saved').appendChild(div);
+  }
+  
+  methodElement.onclick = renderDOM(mainObject);
+  
+  // isHistory
+  // ?
+  // :
 }
 
 
@@ -210,7 +241,6 @@ const Dom = {
     const outputs = Dom.getOutputValues();
     const mainObject = {...inputs, ...outputs};
     renderSideBarByInputs(persistObject, isHistory, mainObject);
-    
   },
   /**
   * clears all history elements
@@ -236,6 +266,16 @@ const Dom = {
       saveElement: document.getElementById(SAVE_SELECTOR),
       clearHistoryElement: document.getElementById(CLEAR_HISTORY_SELECTOR)
     }
+  },
+  clearSaved: (elem, persistObj)=>{
+    const helper = ()=>{
+      console.log(elem, persistObj)
+      if(confirm("Delete saved?")){
+        persistObj.saved.splice(persistObj.saved.findIndex(item => item.id.toString() === elem.getAttribute("id")), 1)
+        elem.parentElement.parentElement.removeChild(elem.parentElement);
+      }
+    }
+    return helper;
   }
 };
 

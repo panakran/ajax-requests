@@ -9,7 +9,6 @@ document.readyState !== 'loading'
 : document.addEventListener('DOMContentLoaded', fn);
 
 ready(() => {
-  
   /** 
   * Initial global constants
   */
@@ -42,5 +41,7 @@ ready(() => {
   confirm("clear?")
   ?Dom.clearHistoryElements(persistObject)
   :{};
+  
+  [...document.querySelectorAll('#saved a.btn')].forEach(elem => elem.onclick = Dom.clearSaved(elem, persistObject));
   
 });

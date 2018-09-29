@@ -1,5 +1,3 @@
-import { M } from '../node_modules/materialize-css/dist/js/materialize'
-
 /**
 * Executes a funciton passed with its params if exeption throwed return the first param passed
 * @param {type} func
