@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { Utils } from './utils.js';
 import { Dom } from './dom.js';
-import { InitializeDom, InitializePersistObj } from './init.js';
+import { InitializeDom, InitializePersistObj } from './initialize.js';
+import { EventHandlers } from './event-handlers.js';
+import { Persist } from './persist.js';
 
 const ready = (fn) =>
 document.readyState !== 'loading'
@@ -10,38 +10,11 @@ document.readyState !== 'loading'
 
 ready(() => {
   /** 
-  * Initial global constants
+  * Initialize application
   */
   let persistObject  = InitializePersistObj();
-  const {requestElement, saveElement, clearHistoryElement} = Dom.getElementsWithEventHandlers();
+  Dom.renderPersistObject(persistObject);
   InitializeDom(document);
-  
-  /**
-  * on click submit button 
-  * 1. we prepare the axios config
-  * 2. on response we call renderDOM to update view
-  * @return {undefined}
-  */
-  requestElement.onclick = () => {
-    /**
-    * Getting DOM elements input values
-    */
-    const axiosConfig = Dom.getInputValues();
-    console.log('REQUEST::', axiosConfig);
-    const startTime = performance.now();
-    
-    axios(axiosConfig)
-    .then((response) => Dom.renderOutputValues(response, Utils.getExecTime(startTime), persistObject, true))
-    .catch((error) => Dom.renderOutputValues(error, Utils.getExecTime(startTime), persistObject, false));
-  };
-  
-  saveElement.onclick = () => Dom.renderSidebarElement(persistObject, false);
-  
-  clearHistoryElement.onclick = () =>
-  confirm("clear?")
-  ?Dom.clearHistoryElements(persistObject)
-  :{};
-  
-  [...document.querySelectorAll('#saved a.btn')].forEach(elem => elem.onclick = Dom.clearSaved(elem, persistObject));
-  
+  EventHandlers.initialize(persistObject);
+  window.onbeforeunload = () => Persist.saveToLocalStorage(persistObject);
 });

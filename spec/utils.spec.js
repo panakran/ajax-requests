@@ -39,3 +39,30 @@ it('parseJSON with input an string', () => {
 }`);
   expect(result1).toEqual({"prop1":1 ,"prop2": "2"});
 });
+
+it('generateUID to generate different numbers', () => {
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+  expect(Utils.generateUID()).not.toEqual(Utils.generateUID());
+});
+it('findIdIndex on array with id prop', () => {
+  const objArray = [
+    {id:1, other:"dsdsfsa"},
+    {id:2, other:"dsdsafsf"},
+    {id:3, other:"dsdafss"},
+    {id:4, other:"dfsdasds"}
+]
+expect(Utils.findIdIndex(objArray, "3")).toEqual(2);
+});
+it('findIdIndex on array with id prop', () => {
+  const objArray = [
+    {id:1, other:"dsdsfsa"},
+    {id:2, other:"dsdsafsf"},
+    {id:3, other:"dsdafss"},
+    {id:4, other:"dfsdasds"}
+]
+expect(Utils.findIdIndex(objArray, "3")).toEqual(2);
+});

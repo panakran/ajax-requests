@@ -13,10 +13,23 @@ const SELECT_TAG_SELECTOR = 'select';
 const REQUEST_SELECTOR = 'req';
 const STATUS_SELECTOR = 'status';
 const SAVE_SELECTOR = 'save';
-const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
-const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
+const HISTORY_SELECTOR = 'history';
 const HISTORY_ELEMENTS_SELECTOR = '#history > div';
 const CLEAR_HISTORY_SELECTOR = 'clearhistory';
+const SAVED_SELECTOR = 'saved';
+const SAVED_DELETE_ELEMENTS_SELECTOR = '#saved a.btn';
+const COLLAPSIBLE_ELEMENTS_SELECTOR = '.collapsible';
+const SIDE_NAV_ELEMENTS_SELECTOR = '.sidenav';
+/**
+ * Class apply constants
+ */
+const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
+const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
+const REMOVE_SAVED_ICON_CLASSES = ["material-icons", "black-text", "white", "right"];
+const REMOVE_SAVED_BUTTON_CLASSES = ["col", "s1", "btn", "black-text", "white", "z-depth-0"];
+/**
+ * Object constants
+ */
 const EMPTY_PERSIST_OBJECT = { history: [], saved: [], acBaseUrl: [], acUrl: [] };
 
 export {
@@ -34,7 +47,14 @@ export {
   SAVE_SELECTOR,
   ERROR_STATUS_CLASS,
   SUCCESS_STATUS_CLASS,
+  HISTORY_SELECTOR,
   HISTORY_ELEMENTS_SELECTOR,
   CLEAR_HISTORY_SELECTOR,
+  SAVED_SELECTOR,
+  SAVED_DELETE_ELEMENTS_SELECTOR,
+  COLLAPSIBLE_ELEMENTS_SELECTOR,
+  SIDE_NAV_ELEMENTS_SELECTOR,
+  REMOVE_SAVED_ICON_CLASSES,
+  REMOVE_SAVED_BUTTON_CLASSES,
   EMPTY_PERSIST_OBJECT
 };

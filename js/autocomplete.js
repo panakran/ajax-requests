@@ -1,13 +1,15 @@
-import { Dom } from './dom.js';
 import M from 'materialize-css';
+import { BASE_URL_SELECTOR, URL_SELECTOR } from './constants';
+
 let autocompleteinstanceBaseUrl;
 let autocompleteinstanceUrl;
 const AcUtils = {
   /**
   * inits tha autocomple instances
   */
- initialize: () => {
-    const {baseURLElement,urlElement } = Dom.getAutocompleteElements();
+  initialize: () => {
+    const baseURLElement = document.getElementById(BASE_URL_SELECTOR);
+    const urlElement = document.getElementById(URL_SELECTOR);
     autocompleteinstanceBaseUrl = M.Autocomplete.init(baseURLElement);
     autocompleteinstanceUrl = M.Autocomplete.init(urlElement);
   },

@@ -9,99 +9,157 @@ import {
   METHODS_SELECTOR,
   REQUEST_SELECTOR,
   STATUS_SELECTOR,
+  HISTORY_SELECTOR,
   HISTORY_ELEMENTS_SELECTOR,
   EMPTY_PERSIST_OBJECT,
   SAVE_SELECTOR,
+  SAVED_SELECTOR,
+  SAVED_DELETE_ELEMENTS_SELECTOR,
+  REMOVE_SAVED_ICON_CLASSES,
+  REMOVE_SAVED_BUTTON_CLASSES,
   CLEAR_HISTORY_SELECTOR
 } from './constants';
 import { Utils } from './utils.js';
 import { AcUtils } from './autocomplete.js';
 import { DomUtils } from './domutils.js';
 
+/**
+* Init input elements
+*/
 let methodElement;
 let baseURLElement;
 let urlElement ;
 let headersElement;
 let bodyElement;
-let requestElement;
+/**
+* returns the inputs elements
+*/
+const getInputElementsObj = () => {
+  return { methodElement, baseURLElement, urlElement, headersElement, bodyElement, requestElement };
+}
 
+/**
+* Init output elements
+*/
 let responseElementH;
 let responseElementB;
 let timerElement;
 let statusElement;
+/**
+* returns the output elements
+*/
+const getOutputElementsObj = () => {
+  return {responseElementH,responseElementB,timerElement,statusElement};
+}
 
 /**
-* renders one side bar object to side bar element based on isHistory input
-* also adds it to persistObject
-* values passed with mainObject
-* @param {*} persistObject 
-* @param {*} isHistory 
-* @param {*} mainObject 
+* Init onclick events elements
 */
-const renderSideBarByInputs = (persistObject, isHistory, mainObject) => {
-  isHistory
-  ?persistObject.history = [...persistObject.history, mainObject]
-  :persistObject.saved = [...persistObject.saved, mainObject];
-  
-  // const sideBarElement = Dom.createElement('li');
-  const methodElement = Dom.createElement('a');
-  
-  if (isHistory){
-    methodElement.classList.add("col");
-    methodElement.classList.add("s12");
-    DomUtils.renderSideBarText(methodElement, mainObject);
-    let div = Dom.createElement('div');
-    div.classList.add("row");
-    div.appendChild(methodElement);
-    document.getElementById('history').appendChild(div);
-    
-  }else{
-    const uniqueId = Math.random(1000000);
-    mainObject.id = uniqueId
-    methodElement.classList.add("col");
-    methodElement.classList.add("s11");
-    let icon = Dom.createElement('i');
-    icon.classList.add("material-icons", "black-text", "white", "right");
-    icon.innerHTML = "clear";
-    let close = Dom.createElement('a');
-    close.setAttribute("href", "#");
-    // close.setAttribute("onclick", "destroyElement(this)");
-    close.setAttribute("id", uniqueId);
-    close.classList.add("col", "s1", "btn", "black-text", "white", "z-depth-0");
-    close.appendChild(icon);
-    DomUtils.renderSideBarText(methodElement, mainObject);
-    let div = Dom.createElement('div');
-    div.classList.add("row");
-    
-    div.appendChild(methodElement);
-    div.appendChild(close);
-    document.getElementById('saved').appendChild(div);
+let requestElement;
+let saveElement;
+let clearHistoryElement;
+let savedElements = [];
+
+/**
+ * Renders only elements that are common on success/error
+ * @param {*} outputDOM 
+ * @param {*} finalRequestTime 
+ * @param {*} persistObject 
+ */
+const renderCommonElements = (outputDOM, finalRequestTime, persistObject) => {
+  const baseURL = baseURLElement.value;
+  const url = urlElement.value;
+  AcUtils.addToBaseUrl(baseURL);
+  AcUtils.addToUrl(url);
+  DomUtils.renderTimerTag(outputDOM.timerElement, finalRequestTime);
+  Dom.renderSidebarElementOnRequest(persistObject);
+};
+
+/**
+ * Renders only elements on success request
+ * @param {*} response 
+ */
+const renderSuccess =  (response) => {
+  let outputDOM = getOutputElementsObj();
+  console.log('RESPONSE SUCCESS::', response);
+  outputDOM.responseElementH.value = Utils.stringifyJSON(response.headers);
+  outputDOM.responseElementB.value = Utils.stringifyJSON(response.data);
+  DomUtils.renderStatusTag(outputDOM.statusElement, response.status);
+  return outputDOM;
+};
+
+/**
+ * Renders only elements on error request
+ * @param {*} response 
+ */
+const renderError = (response) => {
+  let outputDOM = getOutputElementsObj();
+  if (response.response) {
+    console.log('RESPONSE ERROR::', response);
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    outputDOM.responseElementH.value = Utils.stringifyJSON(response.response.headers);
+    outputDOM.responseElementB.value = response.response.data;
+    DomUtils.renderStatusTag(outputDOM.statusElement, response.response.status);
+  } else if (response.request) {
+    console.log('RESPONSE ERROR::', response);
+    // The request was made but no response was received
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // http.ClientRequest in node.js
+    outputDOM.responseElementH.value = Utils.stringifyJSON(response.config.headers);
+    Utils.printErrorMessage(response);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log('RESPONSE ERROR::', response);
+    Utils.printErrorMessage(response.message);
   }
-  
-  methodElement.onclick = renderDOM(mainObject);
-  
-  // isHistory
-  // ?
-  // :
+  return outputDOM;
 }
 
 
-/**
-*Bug fix for materilize we need to dispatch event when we set a select tag value through code 
-* https://stackoverflow.com/questions/49833550/set-value-of-drop-down-select-with-materialize-css-1-0-0-without-jquery
-* @param {*} element 
-*/
-const dispatchSelectEvent = (element) =>{
-  let event;
-  if (typeof(Event) === 'function') {
-    event = new Event('change');
-  } else {  // for IE11
-    event = document.createEvent('Event');
-    event.initEvent('change', true, true);
-  }
-  element.dispatchEvent(event);
-} 
 
+/**
+* renders one history bar object to side bar element based
+* also adds it to persistObject
+* values passed with mainObject
+* @param {*} persistObject 
+* @param {*} mainObject 
+*/
+const renderSideBarHistoryElement = (persistObject, mainObject)=>{
+  persistObject.history = [...persistObject.history, mainObject];
+  
+  const methodElement = Dom.createElement('a');
+  DomUtils.renderMethodElement(methodElement, mainObject, ["col", "s12", "truncate"])
+  let div = Dom.createElement('div');
+  DomUtils.addClasses(div, ["row"]); 
+  div.appendChild(methodElement);
+  document.getElementById(HISTORY_SELECTOR).appendChild(div);
+  methodElement.onclick = renderDOM(mainObject);
+  
+}
+/**
+* renders one saved bar object to side bar element based
+* also adds it to persistObject
+* values passed with mainObject
+* @param {*} persistObject 
+* @param {*} mainObject 
+*/
+const renderSideBarSavedElement = (persistObject, mainObject)=>{
+  persistObject.saved = [...persistObject.saved, mainObject];
+  const methodElement = Dom.createElement('a');
+  DomUtils.renderMethodElement(methodElement, mainObject, ["col", "s11", "truncate"]);
+  
+  const uid = Utils.generateUID();
+  mainObject.id = uid
+  let {deleteButton, icon} = Dom.createDeleteIconButton(persistObject, uid);
+  deleteButton.appendChild(icon);
+  let div = Dom.createElement('div');
+  DomUtils.addClasses(div, ["row"]);   
+  div.appendChild(methodElement);
+  div.appendChild(deleteButton);
+  document.getElementById(SAVED_SELECTOR).appendChild(div);
+  methodElement.onclick = renderDOM(mainObject);
+}
 
 /**
 * function assigned on side bar elements
@@ -111,14 +169,14 @@ const dispatchSelectEvent = (element) =>{
 const renderDOM = (mainObject)=>{
   const helperFunc=() =>{
     const values = mainObject;
-    const inputDOM = Dom.getInputElementsObj();
-    const outputDOM = Dom.getOutputElementsObj();
+    const inputDOM = getInputElementsObj();
+    const outputDOM = getOutputElementsObj();
     
     /**
     * Render input elements on click
     */
     inputDOM.methodElement.value = values.method;
-    dispatchSelectEvent(inputDOM.methodElement);
+    DomUtils.dispatchSelectEvent(inputDOM.methodElement);
     inputDOM.baseURLElement.focus();
     inputDOM.baseURLElement.value = values.baseURL;
     inputDOM.urlElement.focus();
@@ -139,8 +197,26 @@ const renderDOM = (mainObject)=>{
   return helperFunc;
 };
 
+/**
+ * creates a values object from input and output values
+ */
+const createMainObj = () =>{
+  const inputs = Dom.getInputValues();
+  const outputs = Dom.getOutputValues();
+  return {...inputs, ...outputs};
+}
+
 const Dom = {
   initialize:()=>{
+    
+    /**
+    * Elements with event handlers
+    */
+    saveElement = document.getElementById(SAVE_SELECTOR);
+    clearHistoryElement = document.getElementById(CLEAR_HISTORY_SELECTOR);
+    requestElement = document.getElementById(REQUEST_SELECTOR);
+    savedElements = [...document.querySelectorAll(SAVED_DELETE_ELEMENTS_SELECTOR)];
+    
     /**
     * Initialize input elements
     */
@@ -149,7 +225,6 @@ const Dom = {
     urlElement = document.getElementById(URL_SELECTOR);
     headersElement = document.getElementById(HEADERS_SELECTOR);
     bodyElement = document.getElementById(BODY_SELECTOR);
-    requestElement = document.getElementById(REQUEST_SELECTOR);
     
     /**
     * Initialize output elements
@@ -160,22 +235,10 @@ const Dom = {
     statusElement =  document.getElementById(STATUS_SELECTOR);
   },
   /**
-  * returns the inputs elements
-  */
-  getInputElementsObj: () => {
-    return { methodElement, baseURLElement, urlElement, headersElement, bodyElement, requestElement };
-  },
-  /**
-  * returns the οθτputs elements
-  */
-  getOutputElementsObj: () => {
-    return {responseElementH,responseElementB,timerElement,statusElement};
-  },
-  /**
   * returns input values 
   */
   getInputValues: function() {
-    const inputDOM = this.getInputElementsObj();
+    const inputDOM = getInputElementsObj();
     const method = inputDOM.methodElement.options[inputDOM.methodElement.selectedIndex].text;
     const baseURL = inputDOM.baseURLElement.value;
     const url = inputDOM.urlElement.value;
@@ -187,63 +250,44 @@ const Dom = {
   * returns output values 
   */
   getOutputValues: function() {
-    const outputDOM = this.getOutputElementsObj();
+    const outputDOM = getOutputElementsObj();
     const responseH = Utils.parseJSON(outputDOM.responseElementH.value);
     const responseB = Utils.parseJSON(outputDOM.responseElementB.value);
     const execTime = Utils.extractFloat(outputDOM.timerElement.innerHTML);
     const status = Utils.extractStatusCode(outputDOM.statusElement.innerHTML);
     return {responseH,responseB,execTime,status};
   },
+  /**
+  * create element shorthand
+  */
   createElement: function(tag){
     return document.createElement(tag);
   },
   /**
-  * renders the results on output elements and adds a history onject to persist object
-  */
-  renderOutputValues: function(response, finalRequestTime, persistObject, success){
-    let outputDOM = this.getOutputElementsObj();
-    
-    const baseURL = baseURLElement.value;
-    const url = urlElement.value;
-    AcUtils.addToBaseUrl(baseURL);
-    AcUtils.addToUrl(url);
-    if (success) {
-      console.log('RESPONSE SUCCESS::', response);
-      outputDOM.responseElementH.value = Utils.stringifyJSON(response.headers);
-      outputDOM.responseElementB.value = Utils.stringifyJSON(response.data);
-      DomUtils.renderStatusTag(outputDOM.statusElement, response.status);
-    } else {
-      if (response.response) {
-        console.log('RESPONSE ERROR::', response);
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        outputDOM.responseElementH.value = Utils.stringifyJSON(response.response.headers);
-        outputDOM.responseElementB.value = response.response.data;
-        DomUtils.renderStatusTag(outputDOM.statusElement, response.response.status);
-      } else if (response.request) {
-        console.log('RESPONSE ERROR::', response);
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        outputDOM.responseElementH.value = Utils.stringifyJSON(response.config.headers);
-        Utils.printErrorMessage(response);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('RESPONSE ERROR::', response);
-        Utils.printErrorMessage(response.message);
-      }
-    }
-    DomUtils.renderTimerTag(outputDOM.timerElement, finalRequestTime);
-    this.renderSidebarElement(persistObject, true)
-  },
-  renderSidebarElement : function(persistObject, isHistory){
-    const inputs = Dom.getInputValues();
-    const outputs = Dom.getOutputValues();
-    const mainObject = {...inputs, ...outputs};
-    renderSideBarByInputs(persistObject, isHistory, mainObject);
+   * Renders common and succes elements
+   */
+  renderSuccessResponse: function(response, finalRequestTime, persistObject){
+    renderCommonElements(renderSuccess(response), finalRequestTime, persistObject);
   },
   /**
-  * clears all history elements
+   * Renders common and error elements
+   */
+  renderErrorResponse: function(response, finalRequestTime, persistObject){
+    renderCommonElements(renderError(response), finalRequestTime, persistObject);
+  },
+  /**
+  * renders a side bar element history/saved
+  */
+  renderSidebarElementOnSave : (persistObject) => {
+    const mainObject = createMainObj();
+    renderSideBarSavedElement(persistObject, mainObject);
+  },
+  renderSidebarElementOnRequest: (persistObject) => {
+    const mainObject = createMainObj();
+    renderSideBarHistoryElement(persistObject, mainObject);
+  },
+  /**
+  * onclick event handler clears all history elements when pressing delete
   */
   clearHistoryElements: (persistObject)=>{
     persistObject.history = [];
@@ -253,29 +297,39 @@ const Dom = {
   /**
   * renders the persist object when app starts
   */
-  renderPersistObject: function(persistObject){
-    persistObject.history.forEach(x=>renderSideBarByInputs(EMPTY_PERSIST_OBJECT, true, x));
-    persistObject.saved.forEach(x=>renderSideBarByInputs(EMPTY_PERSIST_OBJECT, false, x));
-  },
-  getAutocompleteElements: () => {
-    return { baseURLElement: document.getElementById(BASE_URL_SELECTOR), urlElement: document.getElementById(URL_SELECTOR) };
+  renderPersistObject: (persistObject) => {
+    persistObject.history.forEach(historyObject=>renderSideBarHistoryElement(EMPTY_PERSIST_OBJECT, historyObject));
+    persistObject.saved.forEach(savedObject=>renderSideBarSavedElement(EMPTY_PERSIST_OBJECT, savedObject));
   },
   getElementsWithEventHandlers: () => {
-    return {
-      requestElement: document.getElementById(REQUEST_SELECTOR),
-      saveElement: document.getElementById(SAVE_SELECTOR),
-      clearHistoryElement: document.getElementById(CLEAR_HISTORY_SELECTOR)
-    }
+    return { requestElement, saveElement, clearHistoryElement, savedElements }
   },
+  /**
+  * onclick handler method for saved elements on pressing delete
+  */
   clearSaved: (elem, persistObj)=>{
     const helper = ()=>{
-      console.log(elem, persistObj)
+      const id = elem.getAttribute("id");
       if(confirm("Delete saved?")){
-        persistObj.saved.splice(persistObj.saved.findIndex(item => item.id.toString() === elem.getAttribute("id")), 1)
-        elem.parentElement.parentElement.removeChild(elem.parentElement);
+        persistObj.saved.splice(Utils.findIdIndex(persistObj.saved, id), 1)
+        DomUtils.removeParentElement(elem);
       }
     }
     return helper;
+  },
+  /**
+   * returns a delete and an icon element
+   */
+  createDeleteIconButton: function(persistObject, uid) {
+    let icon = Dom.createElement('i');
+    DomUtils.addClasses(icon, REMOVE_SAVED_ICON_CLASSES);
+    icon.innerHTML = "clear";
+    let deleteButton = Dom.createElement('a');
+    deleteButton.setAttribute("href", "#");
+    deleteButton.onclick = this.clearSaved(deleteButton, persistObject);
+    deleteButton.setAttribute("id", uid);
+    DomUtils.addClasses(deleteButton,REMOVE_SAVED_BUTTON_CLASSES);
+    return { deleteButton, icon }
   }
 };
 

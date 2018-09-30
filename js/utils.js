@@ -1,5 +1,5 @@
 /**
-* Executes a funciton passed with its params if exeption throwed return the first param passed
+* Executes a funciton passed with its params if exeption throwed by JSON method return the first param passed
 * @param {type} func
 * @param {type} params
 * @return {unresolved}
@@ -44,7 +44,7 @@ const Utils = {
   * @return {String}
   */
   createTimerText: (time) => {
-    return `${(time).toFixed(2)}ms`;
+    return `${time.toFixed(2)}ms`;
   },
   
   /**
@@ -65,8 +65,22 @@ const Utils = {
   getExecTime: (startT) => {
     return performance.now() - startT;
   },
+  /**
+   * extracts a float from an input string eg. 121.3223ms gives a number 121.3223
+   */
   extractFloat: (str) => Number(str.replace("ms", "").replace(/[^0-9\.]+/g,"")),
-  extractStatusCode: (str) => str.replace("Status : ", "")
+  /**
+   * extracts the status code string from a status element text eg. 'Status : 404'
+   */
+  extractStatusCode: (str) => str.replace("Status : ", ""),
+  /**
+   * find index on array by .id property
+   */
+  findIdIndex: (array, id) => array.findIndex(item => item.id.toString() === id),
+  /**
+   * generates random value to assign on saved left bar elements id attribute
+   */
+  generateUID: () => Math.random(1000000)
 };
 
 export { Utils };

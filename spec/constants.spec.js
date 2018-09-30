@@ -33,7 +33,7 @@ it('All constants to have correct values', () => {
   expect(SAVE_SELECTOR).toBe('save');
   expect(ERROR_STATUS_CLASS).toEqual(['chip', 'red', 'white-text', 'rounded', 'right']);
   expect(SUCCESS_STATUS_CLASS).toEqual(['chip', 'green', 'white-text', 'rounded', 'right']);
-  expect(HISTORY_ELEMENTS_SELECTOR).toBe('#history > li');
+  expect(HISTORY_ELEMENTS_SELECTOR).toBe('#history > div');
   expect(CLEAR_HISTORY_SELECTOR).toBe('clearhistory');
   expect(EMPTY_PERSIST_OBJECT).toEqual({ history: [], saved: [], acBaseUrl: [], acUrl: [] });
 });
