@@ -34,10 +34,22 @@ npm run analyze
 npm run generate-desktop
 ```
 
-#### Run tests
+#### Run unit tests
 
 ```
 npm run test
+```
+
+#### Run e2e tests
+
+```
+npm run test-e2e
+```
+
+#### Run all tests
+
+```
+npm run test-all
 ```
 
 ## Requests options
@@ -58,5 +70,4 @@ npm run test
 
 ## TODO
 
-- add all request methods
-- fix css
+- add more tests to cover all app

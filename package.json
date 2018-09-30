@@ -8,8 +8,11 @@
     "prod": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=prod --progress",
     "analyze": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=analyze --progress",
     "generate-desktop": "node_modules/.bin/nativefier --insecure \"https://panakran.github.io/ajax-requests/\"",
-    "test": "jasmine",
-    "test-e2e": "node_modules/.bin/cypress open"
+    "test": "jasmine --reporter=jasmine-console-reporter", 
+    "test-e2e": "concurrently \"npm run test-server\" \"npm run test-cypress\"",
+    "test-server": "node_modules/.bin/browser-sync start --server --files --startPath docs",
+    "test-cypress": "node_modules/.bin/cypress open",
+    "test-all": "concurrently \"npm run test\" \"npm run test-e2e\""
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +20,7 @@
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "material-icons": "^0.2.3",
+    "concurrently": "^4.0.1",
     "materialize-css": "^1.0.0"
   },
   "devDependencies": {
@@ -28,6 +32,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
+    "browser-sync": "^2.24.7",
     "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.9",
     "cypress": "^3.1.0",
@@ -36,6 +41,7 @@
     "eslint-plugin-import": "^2.14.0",
     "file-loader": "^1.1.11",
     "jasmine": "^3.2.0",
+    "jasmine-console-reporter": "^3.1.0",
     "jsdom": "^12.0.0",
     "nativefier": "^7.6.7",
     "style-loader": "^0.20.1",
