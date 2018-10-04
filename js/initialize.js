@@ -1,6 +1,5 @@
 import M from 'materialize-css';
 import { SELECT_TAG_SELECTOR, EMPTY_PERSIST_OBJECT, COLLAPSIBLE_ELEMENTS_SELECTOR, SIDE_NAV_ELEMENTS_SELECTOR } from './constants.js';
-import { Dom } from './dom.js';
 import { AcUtils } from './autocomplete.js';
 import { Persist } from './persist.js'
 
@@ -12,8 +11,7 @@ import { Persist } from './persist.js'
  * 
  * @param {*} document 
  */
-const InitializeDom = (document) => {
-  Dom.initialize();
+const InitializeMaterializeElements = () => {
   AcUtils.initialize();
   M.FormSelect.init(document.querySelectorAll(SELECT_TAG_SELECTOR));
   const collapsibleElems = document.querySelectorAll(COLLAPSIBLE_ELEMENTS_SELECTOR);
@@ -30,11 +28,13 @@ const InitializePersistObj = ()=>{
   let data = Persist.loadFromLocalStorage();
   let persistObject;
   if (data === null){
+
     persistObject = EMPTY_PERSIST_OBJECT;
+    Persist.saveToLocalStorage(persistObject);
   }else{
     persistObject = data;
   }
   return persistObject;
 }
 
-export { InitializeDom, InitializePersistObj };
+export { InitializeMaterializeElements, InitializePersistObj };

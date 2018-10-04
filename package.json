@@ -4,24 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node_modules/.bin/webpack-dev-server --config webpack.config.js --env.NODE_ENV=dev --progress",
+    "dev": "node_modules/.bin/webpack-dev-server --config webpack.config.js --env.NODE_ENV=dev --progress --open",
     "prod": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=prod --progress",
     "analyze": "node_modules/.bin/webpack --config webpack.config.js --env.NODE_ENV=analyze --progress",
     "generate-desktop": "node_modules/.bin/nativefier --insecure \"https://panakran.github.io/ajax-requests/\"",
-    "test": "jasmine --reporter=jasmine-console-reporter", 
+    "test": "jasmine --reporter=jasmine-console-reporter",
     "test-e2e": "concurrently \"npm run test-server\" \"npm run test-cypress\"",
     "test-server": "node_modules/.bin/browser-sync start --server --files --startPath docs",
     "test-cypress": "node_modules/.bin/cypress open",
-    "test-all": "concurrently \"npm run test\" \"npm run test-e2e\""
+    "test-all": "concurrently \"npm run prod\" \"npm run test\" \"npm run test-e2e\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
-    "material-icons": "^0.2.3",
     "concurrently": "^4.0.1",
-    "materialize-css": "^1.0.0"
+    "material-icons": "^0.2.3",
+    "materialize-css": "^1.0.0",
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

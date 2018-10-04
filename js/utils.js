@@ -66,21 +66,32 @@ const Utils = {
     return performance.now() - startT;
   },
   /**
-   * extracts a float from an input string eg. 121.3223ms gives a number 121.3223
-   */
+  * extracts a float from an input string eg. 121.3223ms gives a number 121.3223
+  */
   extractFloat: (str) => Number(str.replace("ms", "").replace(/[^0-9\.]+/g,"")),
   /**
-   * extracts the status code string from a status element text eg. 'Status : 404'
-   */
+  * extracts the status code string from a status element text eg. 'Status : 404'
+  */
   extractStatusCode: (str) => str.replace("Status : ", ""),
   /**
-   * find index on array by .id property
-   */
-  findIdIndex: (array, id) => array.findIndex(item => item.id.toString() === id),
+  * find index on array by .id property
+  */
+  findIdIndex: (array, id) => array.findIndex(item => item.id === id),
   /**
-   * generates random value to assign on saved left bar elements id attribute
-   */
-  generateUID: () => Math.random(1000000)
+  * generates random value to assign on saved left bar elements id attribute
+  */
+  generateUID: () => Math.random(1000000),
+  
+  addUniqueId : (obj) => {
+    const uid = Utils.generateUID();
+    let mainObject = obj
+    mainObject.id = uid;
+    return obj
+  },
+  createObjectArray : (responseObject)=>
+  responseObject.constructor !== Array?
+  [responseObject]:
+  responseObject
 };
 
 export { Utils };

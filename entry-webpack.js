@@ -4,4 +4,5 @@ require("./node_modules/material-icons/iconfont/material-icons.css");
 
 require("materialize-css");
 require("axios");
+require("ramda");
 require("./js/main");

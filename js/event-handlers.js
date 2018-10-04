@@ -2,42 +2,51 @@ import { Dom } from './dom.js';
 import { Utils } from './utils.js';
 const axios = require('axios');
 
+import {
+  REQUEST_SELECTOR,
+  SAVE_SELECTOR,
+  CLEAR_HISTORY_SELECTOR,
+} from "./constants";
+
+
 /**
- * Event handlers initializer
- * sets up all onclick event handlers
- */
+* Event handlers initializer
+* sets up all onclick event handlers
+*/
 const EventHandlers = {
   initialize: (persistObject)=>{
-
-    const {requestElement, saveElement, clearHistoryElement, savedElements} = Dom.getElementsWithEventHandlers();
-    
     /**
     * on click submit button 
     * 1. we prepare the axios config
     * 2. on response we call renderDOM to update view
     * @return {undefined}
     */
-    requestElement.onclick = () => {
+    document.getElementById(REQUEST_SELECTOR).onclick = () => {
       /**
       * Getting DOM elements input values
       */
       const axiosConfig = Dom.getInputValues();
       console.log('REQUEST::', axiosConfig);
       const startTime = performance.now();
-      
       axios(axiosConfig)
-      .then((response) => Dom.renderSuccessResponse(response, Utils.getExecTime(startTime), persistObject))
-      .catch((error) => Dom.renderErrorResponse(error, Utils.getExecTime(startTime), persistObject));
+      .then((response) => {
+        const execTime = Utils.getExecTime(startTime);
+        Dom.renderSuccessResponse({response, execTime, axiosConfig})
+      })
+      .catch((response) => {
+        const execTime = Utils.getExecTime(startTime);
+        Dom.renderErrorResponse({response, execTime, axiosConfig})
+      });
     };
     
-    saveElement.onclick = () => Dom.renderSidebarElementOnSave(persistObject);
+    document.getElementById(SAVE_SELECTOR).onclick = () => Dom.renderSidebarElementOnSave();
     
-    clearHistoryElement.onclick = () =>
+    document.getElementById(CLEAR_HISTORY_SELECTOR).onclick = () =>
     confirm("clear?")
     ?Dom.clearHistoryElements(persistObject)
     :{};
     
-    savedElements.forEach(elem => elem.onclick = Dom.clearSaved(elem, persistObject));
+    return persistObject;
   }
 };
 

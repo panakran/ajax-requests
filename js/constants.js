@@ -27,10 +27,11 @@ const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
 const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
 const REMOVE_SAVED_ICON_CLASSES = ["material-icons", "black-text", "white", "right"];
 const REMOVE_SAVED_BUTTON_CLASSES = ["col", "s1", "btn", "black-text", "white", "z-depth-0"];
+const SIDE_BAR_ELEMENT_CLASSES = ['waves-effect', 'black-text'];
 /**
  * Object constants
  */
-const EMPTY_PERSIST_OBJECT = { history: [], saved: [], acBaseUrl: [], acUrl: [] };
+const EMPTY_PERSIST_OBJECT = { history: [], saved: []};
 
 export {
   BASE_URL_SELECTOR,
@@ -56,5 +57,6 @@ export {
   SIDE_NAV_ELEMENTS_SELECTOR,
   REMOVE_SAVED_ICON_CLASSES,
   REMOVE_SAVED_BUTTON_CLASSES,
+  SIDE_BAR_ELEMENT_CLASSES,
   EMPTY_PERSIST_OBJECT
 };
