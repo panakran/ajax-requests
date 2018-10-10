@@ -5,9 +5,14 @@ const { JSDOM } = jsdom;
 describe('DomUtils specs running', ()=>{
   
   it('renderTimerTag to render float number', () => {
-    const dom = new JSDOM(`<!DOCTYPE html><span>5</span>`);
-    let elem = dom.window.document.querySelector("span");
-    DomUtils.renderTimerTag(elem, 2.32323);
+    const doc = new JSDOM(`<!DOCTYPE html><span id="timer">5</span>`);
+    const win = doc.defaultView;
+    
+    global.document = doc;
+    global.window = win;
+
+    let elem = global.document.querySelector("span");
+    DomUtils.renderTimerTag(2.32323);
     expect(elem.innerHTML).toEqual("2.32ms");
   });
   

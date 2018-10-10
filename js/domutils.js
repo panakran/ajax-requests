@@ -1,7 +1,6 @@
 import { ERROR_STATUS_CLASS, SUCCESS_STATUS_CLASS, EXEC_TIME_SELECTOR, STATUS_SELECTOR, SIDE_BAR_ELEMENT_CLASSES, REMOVE_SAVED_ICON_CLASSES, REMOVE_SAVED_BUTTON_CLASSES } from './constants';
 import { Utils } from "./utils.js";
 import { Persist } from './persist';
-const R = require("ramda");
 
 
 /**
@@ -21,7 +20,7 @@ const getIndex = (id) =>Utils.findIdIndex(Persist.loadFromLocalStorage().saved, 
 const clearSaved = (elem, id)=>{
   return ()=>{
     if(confirm("Delete saved?")){
-      R.compose(Persist.clearSavedObjectByIndex, getIndex)(id)
+      Utils.compose(Persist.clearSavedObjectByIndex, getIndex)(id)
       DomUtils.removeParentElement(elem);
     }
   }
@@ -54,7 +53,7 @@ const addSideBarTextClasses = (element)=>{
 * @param {*} mainObject 
 */
 const renderSideBarText = (methodElement, mainObject)=>{
-  R.compose(addSideBarTextClasses,renderInnerHTMLText)(methodElement, mainObject);
+  Utils.compose(addSideBarTextClasses,renderInnerHTMLText)(methodElement, mainObject);
 }
 
 const DomUtils = {

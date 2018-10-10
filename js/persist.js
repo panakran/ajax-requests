@@ -1,12 +1,10 @@
 const APP_KEY = 'AJAX_REQUESTS_APP_OBJECT';
-
 const Persist = {
   
   
   saveToLocalStorage: (AJAX_REQUESTS_APP_OBJECT) =>{
     localStorage.setItem(APP_KEY,  JSON.stringify(AJAX_REQUESTS_APP_OBJECT));
   },
-  
   loadFromLocalStorage: () =>{
     return JSON.parse(localStorage.getItem(APP_KEY));
   },
@@ -14,12 +12,16 @@ const Persist = {
     localStorage.removeItem(APP_KEY);
   },
   addHistoryObject: function(obj){
+    obj.responseH = '';
+    obj.responseB = '';
     let temp = JSON.parse(localStorage.getItem(APP_KEY));
     temp.history.push(obj);
     Persist.saveToLocalStorage(temp);
     return obj;
   },
   addSavedObject: function(obj){
+    obj.responseH = '';
+    obj.responseB = '';
     let temp = JSON.parse(localStorage.getItem(APP_KEY));
     temp.saved.push(obj);
     Persist.saveToLocalStorage(temp);

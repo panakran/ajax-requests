@@ -58,15 +58,25 @@ describe('Utils specs running', ()=>{
       {id:3, other:"dsdafss"},
       {id:4, other:"dfsdasds"}
     ]
-    expect(Utils.findIdIndex(objArray, "3")).toEqual(2);
+    expect(Utils.findIdIndex(objArray, 3)).toEqual(2);
   });
-  it('findIdIndex on array with id prop', () => {
-    const objArray = [
+  it('createObjectArray return always an array', () => {
+    const objArray1 = [
       {id:1, other:"dsdsfsa"},
       {id:2, other:"dsdsafsf"},
       {id:3, other:"dsdafss"},
       {id:4, other:"dfsdasds"}
-    ];
-    expect(Utils.findIdIndex(objArray, "3")).toEqual(2);
+    ]
+    const objArray2 = {id:1, other:"dsdsfsa"};
+
+    expect(Utils.createObjectArray(objArray1).constructor).toEqual(Array);
+    expect(Utils.createObjectArray(objArray2).constructor).toEqual(Array);
+  });
+  it('compose to make composition of N functions', () => {
+    const f1 = (arg1, arg2) => arg1+arg2+1 ;
+    const f2 = (arg1) => arg1*2 ;
+    const f3 = (arg1) => arg1+2 ;
+
+    expect(Utils.compose(f3, f2, f1)(2, 2)).toBe(12);
   });
 });

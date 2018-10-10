@@ -91,7 +91,8 @@ const Utils = {
   createObjectArray : (responseObject)=>
   responseObject.constructor !== Array?
   [responseObject]:
-  responseObject
+  responseObject,
+  compose : (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
 };
 
 export { Utils };

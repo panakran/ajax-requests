@@ -21,16 +21,16 @@ const SAVED_DELETE_ELEMENTS_SELECTOR = '#saved a.btn';
 const COLLAPSIBLE_ELEMENTS_SELECTOR = '.collapsible';
 const SIDE_NAV_ELEMENTS_SELECTOR = '.sidenav';
 /**
- * Class apply constants
- */
+* Class apply constants
+*/
 const ERROR_STATUS_CLASS = ['chip', 'red', 'white-text', 'rounded', 'right'];
 const SUCCESS_STATUS_CLASS = ['chip', 'green', 'white-text', 'rounded', 'right'];
 const REMOVE_SAVED_ICON_CLASSES = ["material-icons", "black-text", "white", "right"];
 const REMOVE_SAVED_BUTTON_CLASSES = ["col", "s1", "btn", "black-text", "white", "z-depth-0"];
 const SIDE_BAR_ELEMENT_CLASSES = ['waves-effect', 'black-text'];
 /**
- * Object constants
- */
+* Object constants
+*/
 const EMPTY_PERSIST_OBJECT = { history: [], saved: []};
 
 export {

@@ -1,8 +1,8 @@
 import M from 'materialize-css';
-import { BASE_URL_SELECTOR, URL_SELECTOR } from './constants';
-
+import { BASE_URL_SELECTOR, URL_SELECTOR } from './constants.js';
 let autocompleteinstanceBaseUrl;
 let autocompleteinstanceUrl;
+
 const AcUtils = {
   /**
   * inits tha autocomple instances
@@ -17,17 +17,13 @@ const AcUtils = {
   /**
   * adds a new object to autocomplete element
   */
-  addToBaseUrl: (newElement) => {
-    autocompleteinstanceBaseUrl.updateData({...autocompleteinstanceBaseUrl.options.data, [newElement]: null });
-  },
-  
+  addToBaseUrl: (newElement) => 
+  autocompleteinstanceBaseUrl.updateData({...autocompleteinstanceBaseUrl.options.data, [newElement]: null }),
   /**
   * adds a new object to autocomplete element
   */
-  addToUrl: (newElement) => {
-    autocompleteinstanceUrl.updateData({ ...autocompleteinstanceUrl.options.data, [newElement]: null });
-  },
-  
+  addToUrl: (newElement) =>
+  autocompleteinstanceUrl.updateData({ ...autocompleteinstanceUrl.options.data, [newElement]: null }),
   /**
   * returns the autocomplete object 
   */

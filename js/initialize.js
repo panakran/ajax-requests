@@ -1,6 +1,6 @@
 import M from 'materialize-css';
 import { SELECT_TAG_SELECTOR, EMPTY_PERSIST_OBJECT, COLLAPSIBLE_ELEMENTS_SELECTOR, SIDE_NAV_ELEMENTS_SELECTOR } from './constants.js';
-import { AcUtils } from './autocomplete.js';
+import {AcUtils} from './autocomplete.js';
 import { Persist } from './persist.js'
 
 /**
