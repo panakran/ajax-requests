@@ -63,8 +63,8 @@ const DomUtils = {
   * @param {type} newValue
   */
   renderStatusTag: function(newValue) {
-    console.log(newValue)
     let element = document.getElementById(STATUS_SELECTOR);
+    document.getElementById(STATUS_SELECTOR).style.display = "block";
     element.classList = [];
     newValue < 400
     ? addClassAndRender(element, newValue, SUCCESS_STATUS_CLASS)
@@ -74,8 +74,10 @@ const DomUtils = {
   /**
   * render new value to timer element
   */
-  renderTimerTag: (newValue)=>
-  document.getElementById(EXEC_TIME_SELECTOR).innerHTML = Utils.createTimerText(newValue),
+  renderTimerTag: (newValue)=>{
+    document.getElementById(EXEC_TIME_SELECTOR).innerHTML = Utils.createTimerText(newValue)
+    document.getElementById(EXEC_TIME_SELECTOR).style.display = "block";
+  },
   /**
   * removes parent and himself of an element 
   */
@@ -130,5 +132,6 @@ const DomUtils = {
   */
   createElement: (tag)=>
   document.createElement(tag)
+
 }
 export { DomUtils };

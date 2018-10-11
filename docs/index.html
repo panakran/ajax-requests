@@ -76,57 +76,51 @@
             <textarea id="body" class="materialize-textarea teal-text text-darken-3" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
             <label for="body">Body</label>
           </div>
+          <div class="row center">
+            <a class=" waves-effect waves-light btn btn-large red z-depth-5" id="clearAll"><i class="material-icons right">clear_all</i><strong>Clear</strong></a>
+            <a class=" waves-effect waves-light btn btn-large blue z-depth-5" id="save"><i class="material-icons right">save</i><strong>Save</strong></a>
+            <a class=" waves-effect waves-light btn btn-large green z-depth-5" id="req"><i class="material-icons right">send</i><strong>Submit</strong></a>
+          </div>
+        </div>
+        <div class="col s6">
           <div class="row">
-            <!-- <div class="col s6"> -->
-              <div class="col s2">&emsp;
-              </div>
-              <a class="col s3 waves-effect waves-light btn btn-large z-depth-5" id="save" blue><i class="material-icons right">save</i><strong>Save</strong></a>
-              <!-- </div> -->
-              <div class="col s2">&emsp;
-              </div>
-              <a class="col s3 waves-effect waves-light btn btn-large z-depth-5" id="req"><i class="material-icons right">send</i><strong>Submit</strong></a>
-              <div class="col s2">&emsp;
-              </div>
+            <div class="col s4">
+              <h4>Response
+              </h4>
+            </div>
+            <div class="col s4">
+              <h4  id="executiontime" class="white red-text text-lighten-1"></h4>
+            </div>
+            <div class="col s4">
+              <h4 id="status"></h4>
             </div>
           </div>
-          <div class="col s6">
-            <div class="row">
-              <div class="col s3">
-                <h4>Response
-                </h4>
-              </div>
-              <div class="col s5">
-                <h4  id="executiontime" class="white red-text text-lighten-1"></h4>
-              </div>
-              <div class="col s4">
-                <h4 id="status"></h4>
-              </div>
-            </div>
-            <div class="input-field col s12">
-              <textarea id="responseH" class="materialize-textarea teal-text text-darken-3" disabled placeholder="Response headers"></textarea>
-            </div>
-            <div class="input-field col s12">
-              <textarea id="responseB" class="materialize-textarea teal-text text-darken-3" disabled placeholder="Response body"></textarea>
-            </div>
+          <div class="input-field col s12">
+            <textarea id="responseH" class="materialize-textarea teal-text text-darken-3" disabled placeholder="Response headers"></textarea>
+          </div>
+          <div class="input-field col s12">
+            <textarea id="responseB" class="materialize-textarea teal-text text-darken-3" disabled placeholder="Response body"></textarea>
           </div>
         </div>
       </div>
-      <div id="nano" class="card white z-depth-0">
+    </div>
+    <div id="nano" class="card white z-depth-0">
+    </div>
+  </main>
+  <footer class="page-footer blue z-depth-4">
+    <div class="footer-copyright">
+      <div class="leftpadding">
+        <span class="white-text">Powered by </span>
+        <a class="white-text" href="https://github.com/Dogfalo/materialize"><strong>Materialize</strong></a>
+        | <a class="white-text" href="https://github.com/axios/axios"><strong>Axios</strong></a>
+        | <a class="white-text" href="https://github.com/webpack/webpack"><strong>Webpack</strong></a>
       </div>
-    </main>
-    <footer class="page-footer blue z-depth-4">
-      <div class="footer-copyright">
-        <div class="leftpadding">
-          <span class="white-text">Powered by </span>
-          <a class="white-text" href="https://github.com/Dogfalo/materialize"><strong>Materialize</strong></a>
-          | <a class="white-text" href="https://github.com/axios/axios"><strong>Axios</strong></a>
-          | <a class="white-text" href="https://github.com/webpack/webpack"><strong>Webpack</strong></a>
-        </div>
-        <div class="container">
-          <a class="white-text right" href="https://github.com/panakran/ajax-requests"><strong>Github</strong></a>
-        </div>
+      <div class="container">
+        <a class="right" href="https://github.com/panakran/ajax-requests">
+          <img src="github.png" />
+        </a>
       </div>
-    </footer>
-  </body>
-  </html>
-  
+    </div>
+  </footer>
+</body>
+</html>

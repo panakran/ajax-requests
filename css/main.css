@@ -30,7 +30,7 @@ main {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -38,7 +38,7 @@ main {
 }
 
 ::-webkit-scrollbar-thumb {
-  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,0.5); 
+  -webkit-box-shadow: inset 0 0 100px rgb(70, 141, 207);
 }
 .nanobar {
   width: 100%;

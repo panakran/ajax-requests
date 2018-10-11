@@ -8,6 +8,8 @@ import {
   METHODS_SELECTOR,
   HISTORY_SELECTOR,
   SAVED_SELECTOR,
+  STATUS_SELECTOR,
+  EXEC_TIME_SELECTOR
 } from './constants';
 import { Utils } from './utils.js';
 import { AcUtils } from './autocomplete.js';
@@ -34,7 +36,6 @@ const Render = {
       div.appendChild(methodElement);
       return div;
     });
-    console.log(divs)
     return divs;
   },
   /**
@@ -95,7 +96,6 @@ const Render = {
       console.log('RESPONSE ERROR::', errorObject.response);
       Utils.printErrorMessage(errorObject.response.message);
     }
-    console.log("1", Helpers.createErrorObject(errorObject));
     return Helpers.createErrorObject(errorObject);
   },
   /**
@@ -146,9 +146,36 @@ const Render = {
     return responseObject;
   },
   
+  /**
+   * Renders new history objects
+   */
   updateHistoryDOM : (divs)=> divs.forEach(div=>document.getElementById(HISTORY_SELECTOR).appendChild(div)),
   
-  updateSavedDOM : (divs)=> divs.forEach(div=>document.getElementById(SAVED_SELECTOR).appendChild(div))
+  /**
+   * Renders new saved objects
+   */
+  updateSavedDOM : (divs)=> divs.forEach(div=>document.getElementById(SAVED_SELECTOR).appendChild(div)),
+
+  /**
+   * Clearing panel method
+   */
+  clearAllMain: () => {
+    document.getElementById(METHODS_SELECTOR).value = 'GET';
+    DomUtils.dispatchSelectEvent(document.getElementById(METHODS_SELECTOR));
+    document.getElementById(BASE_URL_SELECTOR).focus();
+    document.getElementById(BASE_URL_SELECTOR).value = '';
+    document.getElementById(URL_SELECTOR).focus();
+    document.getElementById(URL_SELECTOR).value = '';
+    document.getElementById(HEADERS_SELECTOR).focus();
+    document.getElementById(HEADERS_SELECTOR).value =  '';
+    document.getElementById(BODY_SELECTOR).focus();
+    document.getElementById(BODY_SELECTOR).value =  '';
+    document.getElementById(BASE_URL_SELECTOR).focus();
+    document.getElementById(RESPONSE_HEADER_SELECTOR).value = '';
+    document.getElementById(RESPONSE_BODY_SELECTOR).value = '';
+    document.getElementById(EXEC_TIME_SELECTOR).style.display = "none";
+    document.getElementById(STATUS_SELECTOR).style.display = "none";
+  }
 }
 
 export { Render };

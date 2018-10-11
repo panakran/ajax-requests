@@ -1,7 +1,8 @@
 import { Dom } from './dom.js';
 import { DomUtils } from './domutils.js';
 import { Utils } from './utils.js';
-import { REQUEST_SELECTOR, SAVE_SELECTOR, CLEAR_HISTORY_SELECTOR } from "./constants";
+import { Render } from './render.js';
+import { REQUEST_SELECTOR, SAVE_SELECTOR, CLEAR_HISTORY_SELECTOR, CLEAR_ALL_SELECTOR } from "./constants";
 const axios = require('axios');
 const Nanobar = require('nanobar');
 
@@ -61,6 +62,9 @@ const EventHandlers = {
     confirm("Clear history?")
     ?Dom.clearHistoryElements(persistObject)
     :{};
+
+    document.getElementById(CLEAR_ALL_SELECTOR).onclick = () =>
+    Render.clearAllMain();
     
     return persistObject;
   }

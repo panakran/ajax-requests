@@ -11,6 +11,7 @@ import {
   REQUEST_SELECTOR,
   STATUS_SELECTOR,
   SAVE_SELECTOR,
+  CLEAR_ALL_SELECTOR,
   ERROR_STATUS_CLASS,
   SUCCESS_STATUS_CLASS,
   HISTORY_SELECTOR,
@@ -42,6 +43,7 @@ describe('Constants specs running', ()=>{
     expect(SAVE_SELECTOR).toBe('save');
     expect(HISTORY_SELECTOR).toBe('history');
     expect(SAVED_SELECTOR).toBe('saved');
+    expect(CLEAR_ALL_SELECTOR).toBe('clearAll');
     expect(COLLAPSIBLE_ELEMENTS_SELECTOR).toBe('.collapsible');
     expect(SIDE_NAV_ELEMENTS_SELECTOR).toBe('.sidenav');
     expect(REMOVE_SAVED_ICON_CLASSES).toEqual(["material-icons", "black-text", "white", "right"]);
